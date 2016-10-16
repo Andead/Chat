@@ -8,14 +8,14 @@
     <Setting Name="Username" Type="System.String" Scope="User">
       <Value Profile="(Default)">Guest</Value>
     </Setting>
-    <Setting Name="ServerName" Type="System.String" Scope="User">
-      <Value Profile="(Default)">localhost/chat</Value>
-    </Setting>
     <Setting Name="Protocol" Type="System.String" Scope="User">
       <Value Profile="(Default)">net.tcp</Value>
     </Setting>
+    <Setting Name="ServerName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">localhost</Value>
+    </Setting>
     <Setting Name="Port" Type="System.Int16" Scope="User">
-      <Value Profile="(Default)">22727</Value>
+      <Value Profile="(Default)">808</Value>
     </Setting>
   </Settings>
 </SettingsFile>
