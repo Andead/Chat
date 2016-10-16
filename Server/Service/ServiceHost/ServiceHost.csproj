@@ -37,7 +37,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.3.10\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\..\packages\NLog.4.3.10\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -58,15 +58,15 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\Resources\Common.csproj">
+    <ProjectReference Include="..\..\..\Common\Resources\Common.csproj">
       <Project>{F9E6727D-BB3B-484B-B4DC-4067F4EFDF80}</Project>
       <Name>Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ChatService\Service.csproj">
+    <ProjectReference Include="..\Service\Service.csproj">
       <Project>{bfadae9c-2eb3-4200-8ea0-6637f5b9c6ff}</Project>
       <Name>Service</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Server\Server.csproj">
+    <ProjectReference Include="..\..\Server\Server.csproj">
       <Project>{739669cf-bcd2-4da1-9f0e-cbcaed554a64}</Project>
       <Name>Server</Name>
     </ProjectReference>

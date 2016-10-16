@@ -66,11 +66,11 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\Resources\Common.csproj">
+    <ProjectReference Include="..\..\..\Common\Resources\Common.csproj">
       <Project>{F9E6727D-BB3B-484B-B4DC-4067F4EFDF80}</Project>
       <Name>Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Server\Server.csproj">
+    <ProjectReference Include="..\..\Server\Server.csproj">
       <Project>{739669cf-bcd2-4da1-9f0e-cbcaed554a64}</Project>
       <Name>Server</Name>
     </ProjectReference>
