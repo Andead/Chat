@@ -22,13 +22,13 @@ namespace Andead.Chat.Client.ServiceModel.Services
                     channel = DuplexChannelFactory<IChatService>.CreateChannel(
                         new InstanceContext(callbackClient),
                         new NetTcpBinding(SecurityMode.None),
-                        new EndpointAddress($"net.tcp://{configuration.ServerName}/Service.svc"));
+                        new EndpointAddress($"net.tcp://{configuration.ServerName}:{configuration.Port}/Service.svc"));
                     break;
                 case "http":
                     channel = DuplexChannelFactory<IChatService>.CreateChannel(
                         new InstanceContext(callbackClient),
                         new WSDualHttpBinding(WSDualHttpSecurityMode.None),
-                        new EndpointAddress($"http://{configuration.ServerName}/Service.svc"));
+                        new EndpointAddress($"http://{configuration.ServerName}:{configuration.Port}/Service.svc"));
                     break;
                 default:
                     throw new NotSupportedException("Supported protocols are only net.tcp and http.");

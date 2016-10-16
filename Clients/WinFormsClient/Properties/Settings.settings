@@ -14,5 +14,8 @@
     <Setting Name="Protocol" Type="System.String" Scope="User">
       <Value Profile="(Default)">net.tcp</Value>
     </Setting>
+    <Setting Name="Port" Type="System.Int16" Scope="User">
+      <Value Profile="(Default)">22727</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

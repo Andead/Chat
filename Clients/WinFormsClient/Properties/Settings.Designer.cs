@@ -70,5 +70,17 @@ namespace Andead.Chat.Client.WinForms.Properties {
                 this["Protocol"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("22727")]
+        public short Port {
+            get {
+                return ((short)(this["Port"]));
+            }
+            set {
+                this["Port"] = value;
+            }
+        }
     }
 }
