@@ -10,10 +10,29 @@ namespace Andead.Chat.Client.ServiceModel.Services
     {
         public IChatService Create(ConnectionConfiguration configuration, IChatServiceCallback callbackClient)
         {
-            IChatService channel = DuplexChannelFactory<IChatService>.CreateChannel(
-                new InstanceContext(callbackClient),
-                new NetTcpBinding(SecurityMode.None),
-                new EndpointAddress($"net.tcp://{configuration.ServerName}/Service.svc"));
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            IChatService channel;
+            switch (configuration.Protocol)
+            {
+                case "net.tcp":
+                    channel = DuplexChannelFactory<IChatService>.CreateChannel(
+                        new InstanceContext(callbackClient),
+                        new NetTcpBinding(SecurityMode.None),
+                        new EndpointAddress($"net.tcp://{configuration.ServerName}/Service.svc"));
+                    break;
+                case "http":
+                    channel = DuplexChannelFactory<IChatService>.CreateChannel(
+                        new InstanceContext(callbackClient),
+                        new WSDualHttpBinding(WSDualHttpSecurityMode.None),
+                        new EndpointAddress($"http://{configuration.ServerName}/Service.svc"));
+                    break;
+                default:
+                    throw new NotSupportedException("Supported protocols are only net.tcp and http.");
+            }
 
             return channel;
         }

@@ -25,18 +25,6 @@ namespace Andead.Chat.Client.WinForms.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("localhost")]
-        public string ServerName {
-            get {
-                return ((string)(this["ServerName"]));
-            }
-            set {
-                this["ServerName"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("1000")]
         public int Timeout {
             get {
@@ -56,6 +44,30 @@ namespace Andead.Chat.Client.WinForms.Properties {
             }
             set {
                 this["Username"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("localhost/chat")]
+        public string ServerName {
+            get {
+                return ((string)(this["ServerName"]));
+            }
+            set {
+                this["ServerName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("net.tcp")]
+        public string Protocol {
+            get {
+                return ((string)(this["Protocol"]));
+            }
+            set {
+                this["Protocol"] = value;
             }
         }
     }

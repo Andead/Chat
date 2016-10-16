@@ -2,14 +2,17 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Andead.Chat.Client.WinForms.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="ServerName" Type="System.String" Scope="User">
-      <Value Profile="(Default)">localhost</Value>
-    </Setting>
     <Setting Name="Timeout" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">1000</Value>
     </Setting>
     <Setting Name="Username" Type="System.String" Scope="User">
       <Value Profile="(Default)">Guest</Value>
+    </Setting>
+    <Setting Name="ServerName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">localhost/chat</Value>
+    </Setting>
+    <Setting Name="Protocol" Type="System.String" Scope="User">
+      <Value Profile="(Default)">net.tcp</Value>
     </Setting>
   </Settings>
 </SettingsFile>

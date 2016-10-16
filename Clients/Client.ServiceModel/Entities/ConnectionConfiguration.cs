@@ -2,14 +2,12 @@
 {
     public class ConnectionConfiguration
     {
-        public static ConnectionConfiguration Default = new ConnectionConfiguration
-        {
-            ServerName = "localhost",
-            TimeOut = 1000
-        };
+        public static ConnectionConfiguration Default = new ConnectionConfiguration();
 
-        public string ServerName { get; set; }
+        public string ServerName { get; set; } = "net.tcp";
 
-        public int TimeOut { get; set; }
+        public string Protocol { get; set; } = "localhost";
+
+        public int TimeOut { get; set; } = 1000;
     }
 }

@@ -14,6 +14,7 @@ namespace Andead.Chat.Client.WinForms
                    (_connectionConfiguration = new ConnectionConfiguration
                    {
                        ServerName = Settings.Default.ServerName,
+                       Protocol = Settings.Default.Protocol,
                        TimeOut = Settings.Default.Timeout
                    });
         }
