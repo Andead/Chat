@@ -98,7 +98,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Client.ServiceModel\Client.Wcf.csproj">
+    <ProjectReference Include="..\Client.Wcf\Client.Wcf.csproj">
       <Project>{d61e670c-6c48-4133-a144-05c161146742}</Project>
       <Name>Client.Wcf</Name>
     </ProjectReference>

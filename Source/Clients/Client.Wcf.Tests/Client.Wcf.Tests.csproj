@@ -68,7 +68,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Client.ServiceModel\Client.Wcf.csproj">
+    <ProjectReference Include="..\Client.Wcf\Client.Wcf.csproj">
       <Project>{D61E670C-6C48-4133-A144-05C161146742}</Project>
       <Name>Client.Wcf</Name>
     </ProjectReference>
