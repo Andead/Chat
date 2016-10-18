@@ -21,6 +21,31 @@ namespace ClientsTests
         }
 
         [Test]
+        public void ServiceClient_AfterSignIn_HasCorrectSignedInValue()
+        {
+            var responses = new[]
+            {
+                new SignInResponse {Success = false},
+                new SignInResponse {Success = true}
+            };
+
+            foreach (SignInResponse response in responses)
+            {
+                var serviceMock = new Mock<IChatService>();
+                serviceMock.Setup(s => s.SignIn(It.IsAny<SignInRequest>()))
+                    .Returns<SignInRequest>(request => response);
+                serviceMock.Setup(s => s.SignInAsync(It.IsAny<SignInRequest>()))
+                    .Returns<SignInRequest>(request => Task.FromResult(response));
+
+                ServiceClient client = CreateClient(serviceMock.Object);
+
+                client.SignIn(string.Empty);
+
+                Assert.AreEqual(response.Success, client.SignedIn);
+            }
+        }
+
+        [Test]
         public async Task ServiceClient_AfterSignInAsync_HasCorrectSignedInValue()
         {
             var responses = new[]
@@ -46,6 +71,16 @@ namespace ClientsTests
         }
 
         [Test]
+        public void ServiceClient_AfterSignOut_HasFalseSignedInValue()
+        {
+            ServiceClient client = CreateClient(Mock.Of<IChatService>());
+
+            client.SignOut();
+
+            Assert.IsFalse(client.SignedIn);
+        }
+
+        [Test]
         public async Task ServiceClient_AfterSignOutAsync_HasFalseSignedInValue()
         {
             ServiceClient client = CreateClient(Mock.Of<IChatService>());
@@ -56,7 +91,25 @@ namespace ClientsTests
         }
 
         [Test]
-        public async Task ServiceClient_GetOnlineCount_ReturnsCorrectValue()
+        public void ServiceClient_GetOnlineCount_ReturnsCorrectValue()
+        {
+            int? testValue = 3;
+
+            var serviceMock = new Mock<IChatService>();
+            serviceMock.Setup(s => s.GetOnlineCount())
+                .Returns(testValue);
+            serviceMock.Setup(s => s.GetOnlineCountAsync())
+                .Returns(() => Task.FromResult(testValue));
+
+            ServiceClient client = CreateClient(serviceMock.Object);
+
+            int? result = client.GetOnlineCount();
+
+            Assert.AreEqual(testValue, result);
+        }
+
+        [Test]
+        public async Task ServiceClient_GetOnlineCountAsync_ReturnsCorrectValue()
         {
             int? testValue = 3;
 
@@ -102,6 +155,27 @@ namespace ClientsTests
         }
 
         [Test]
+        public void ServiceClient_Send_PassesCorrectData()
+        {
+            const string testMessage = "Test message";
+            string receivedMessage = null;
+
+            var serviceMock = new Mock<IChatService>();
+            serviceMock.Setup(s => s.SendMessage(It.IsAny<SendMessageRequest>()))
+                .Returns<SendMessageRequest>(request => new SendMessageResponse {Success = true})
+                .Callback<SendMessageRequest>(request => receivedMessage = request.Message);
+            serviceMock.Setup(s => s.SendMessageAsync(It.IsAny<SendMessageRequest>()))
+                .Returns<SendMessageRequest>(request => Task.FromResult(new SendMessageResponse {Success = true}))
+                .Callback<SendMessageRequest>(request => receivedMessage = request.Message);
+
+            ServiceClient client = CreateClient(serviceMock.Object);
+
+            client.Send(testMessage);
+
+            Assert.AreEqual(testMessage, receivedMessage);
+        }
+
+        [Test]
         public async Task ServiceClient_SendAsync_PassesCorrectData()
         {
             const string testMessage = "Test message";
@@ -123,7 +197,27 @@ namespace ClientsTests
         }
 
         [Test]
-        public async Task ServiceClient_SignIn_SendsCorrectNameInRequest()
+        public void ServiceClient_SignIn_SendsCorrectNameInRequest()
+        {
+            const string testName = "Test name";
+            string receivedName = null;
+
+            var serviceMock = new Mock<IChatService>();
+            serviceMock.Setup(s => s.SignInAsync(It.IsAny<SignInRequest>()))
+                .Callback<SignInRequest>(r => receivedName = r.Name)
+                .Returns<SignInRequest>(r => Task.FromResult(new SignInResponse()));
+            serviceMock.Setup(s => s.SignIn(It.IsAny<SignInRequest>()))
+                .Callback<SignInRequest>(r => receivedName = r.Name)
+                .Returns<SignInRequest>(r => new SignInResponse());
+
+            ServiceClient client = CreateClient(serviceMock.Object);
+
+            client.SignIn(testName);
+            Assert.AreEqual(testName, receivedName);
+        }
+
+        [Test]
+        public async Task ServiceClient_SignInAsync_SendsCorrectNameInRequest()
         {
             const string testName = "Test name";
             string receivedName = null;
@@ -139,6 +233,32 @@ namespace ClientsTests
 
             await client.SignInAsync(testName);
             Assert.AreEqual(testName, receivedName);
+        }
+
+        [Test]
+        public void SignIn_ReturnsCorrectSignInResult()
+        {
+            var responses = new[]
+            {
+                new SignInResponse {Success = false, Message = "Test message 1"},
+                new SignInResponse {Success = true, Message = "Test message 2"}
+            };
+
+            foreach (SignInResponse response in responses)
+            {
+                var serviceMock = new Mock<IChatService>();
+                serviceMock.Setup(s => s.SignIn(It.IsAny<SignInRequest>()))
+                    .Returns<SignInRequest>(request => response);
+                serviceMock.Setup(s => s.SignInAsync(It.IsAny<SignInRequest>()))
+                    .Returns<SignInRequest>(request => Task.FromResult(response));
+
+                ServiceClient client = CreateClient(serviceMock.Object);
+
+                SignInResult signInResult = client.SignIn(string.Empty);
+
+                Assert.AreEqual(response.Success, signInResult.Success);
+                Assert.AreEqual(response.Message, signInResult.Message);
+            }
         }
 
         [Test]

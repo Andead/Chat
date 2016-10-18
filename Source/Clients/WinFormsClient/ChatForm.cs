@@ -10,12 +10,12 @@ namespace Andead.Chat.Client.WinForms
     public partial class ChatForm : Form
     {
         private readonly string _serverName;
-        private readonly IServiceClient _client;
+        private readonly IAsyncServiceClient _client;
 
         private int? _onlineCount;
         private Timer _onlineCountTimer;
 
-        public ChatForm(IServiceClient client)
+        public ChatForm(IAsyncServiceClient client)
         {
             _client = client;
             _serverName = client.ServerName;

@@ -7,7 +7,7 @@ using Andead.Chat.Client.Wcf.ChatService;
 
 namespace Andead.Chat.Client.Wcf
 {
-    public class ServiceClient : IServiceClient, IChatServiceCallback
+    public class ServiceClient : IAsyncServiceClient, IChatServiceCallback
     {
         private TimeSpan _timeout;
 
@@ -16,12 +16,9 @@ namespace Andead.Chat.Client.Wcf
         /// </summary>
         public virtual IChatService Service { get; private set; }
 
-        void IChatServiceCallback.ReceiveMessage(string message)
-        {
-            MessageReceived?.Invoke(this, new MessageReceivedEventArgs(message));
-        }
-
         public bool SignedIn { get; private set; }
+
+        public virtual event EventHandler<MessageReceivedEventArgs> MessageReceived;
 
         public string ServerName { get; private set; }
 
@@ -59,9 +56,15 @@ namespace Andead.Chat.Client.Wcf
             ((ICommunicationObject) Service).Close(_timeout);
         }
 
-        public async Task<int?> GetOnlineCountAsync()
+        public SignInResult SignIn(string name)
         {
-            return await Service.GetOnlineCountAsync();
+            var request = new SignInRequest {Name = name};
+
+            SignInResponse response = Service.SignIn(request);
+
+            SignedIn = response.Success;
+
+            return new SignInResult(response.Success, response.Message);
         }
 
         public async Task<SignInResult> SignInAsync(string name)
@@ -75,13 +78,39 @@ namespace Andead.Chat.Client.Wcf
             return new SignInResult(response.Success, response.Message);
         }
 
-        public virtual event EventHandler<MessageReceivedEventArgs> MessageReceived;
+        public void SignOut()
+        {
+            Service.SignOut();
+
+            SignedIn = false;
+        }
 
         public async Task SignOutAsync()
         {
             await Service.SignOutAsync();
 
             SignedIn = false;
+        }
+
+        public int? GetOnlineCount()
+        {
+            return Service.GetOnlineCount();
+        }
+
+        public async Task<int?> GetOnlineCountAsync()
+        {
+            return await Service.GetOnlineCountAsync();
+        }
+
+        public SendMessageResult Send(string message)
+        {
+            var request = new SendMessageRequest {Message = message};
+
+            SendMessageResponse response = Service.SendMessage(request);
+
+            var result = new SendMessageResult {Message = response.Message, Success = response.Success};
+
+            return result;
         }
 
         public async Task<SendMessageResult> SendAsync(string message)
@@ -95,9 +124,19 @@ namespace Andead.Chat.Client.Wcf
             return result;
         }
 
+        public string[] GetNamesOnline()
+        {
+            return Service.GetNamesOnline();
+        }
+
         public async Task<string[]> GetNamesOnlineAsync()
         {
             return await Service.GetNamesOnlineAsync();
+        }
+
+        void IChatServiceCallback.ReceiveMessage(string message)
+        {
+            MessageReceived?.Invoke(this, new MessageReceivedEventArgs(message));
         }
     }
 }

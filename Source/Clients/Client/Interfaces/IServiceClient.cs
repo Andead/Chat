@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using Andead.Chat.Client.Entities;
 
 namespace Andead.Chat.Client.Interfaces
@@ -27,31 +26,30 @@ namespace Andead.Chat.Client.Interfaces
         void Disconnect();
 
         /// <summary>
-        ///     Performs sign-in with a specified username asynchronously.
+        ///     Performs sign-in with a specified username.
         /// </summary>
         /// <param name="name">Username.</param>
-        Task<SignInResult> SignInAsync(string name);
+        SignInResult SignIn(string name);
 
         /// <summary>
-        ///     Performs sign-out asynchronously.
+        ///     Performs sign-out.
         /// </summary>
-        Task SignOutAsync();
+        void SignOut();
 
         /// <summary>
-        ///     Gets the number of online users asynchronously.
+        ///     Gets the number of online users.
         /// </summary>
-        Task<int?> GetOnlineCountAsync();
+        int? GetOnlineCount();
 
         /// <summary>
-        ///     Gets the names of online users asynchronously.
+        ///     Gets the names of online users.
         /// </summary>
-        /// <returns></returns>
-        Task<string[]> GetNamesOnlineAsync();
+        string[] GetNamesOnline();
 
         /// <summary>
-        ///     Sends message to the chat asynchronously.
+        ///     Sends message to the chat.
         /// </summary>
-        Task<SendMessageResult> SendAsync(string message);
+        SendMessageResult Send(string message);
 
         /// <summary>
         ///     Raises when a message is received.

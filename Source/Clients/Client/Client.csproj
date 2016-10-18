@@ -39,6 +39,7 @@
     <Compile Include="Entities\MessageReceivedEventArgs.cs" />
     <Compile Include="Entities\SendMessageResult.cs" />
     <Compile Include="Entities\SignInResult.cs" />
+    <Compile Include="Interfaces\IAsyncServiceClient.cs" />
     <Compile Include="Interfaces\IServiceClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
