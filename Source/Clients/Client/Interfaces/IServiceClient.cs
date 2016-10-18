@@ -4,7 +4,7 @@ using Andead.Chat.Client.Entities;
 
 namespace Andead.Chat.Client.Interfaces
 {
-    public interface IServiceClient : IDisposable
+    public interface IServiceClient
     {
         /// <summary>
         ///     Gets a boolean value indicating that the client is currently signed in to server.
@@ -15,6 +15,16 @@ namespace Andead.Chat.Client.Interfaces
         ///     Gets the server name.
         /// </summary>
         string ServerName { get; }
+
+        /// <summary>
+        ///     Opens the connection.
+        /// </summary>
+        void Connect(ConnectionConfiguration configuration);
+
+        /// <summary>
+        ///     Closes the connection.
+        /// </summary>
+        void Disconnect();
 
         /// <summary>
         ///     Performs sign-in with a specified username asynchronously.

@@ -10,14 +10,14 @@ namespace Andead.Chat.Client.WinForms
     public partial class ChatForm : Form
     {
         private readonly string _serverName;
-        internal readonly IServiceClient Client;
+        private readonly IServiceClient _client;
 
         private int? _onlineCount;
         private Timer _onlineCountTimer;
 
         public ChatForm(IServiceClient client)
         {
-            Client = client;
+            _client = client;
             _serverName = client.ServerName;
 
             client.MessageReceived += ClientOnMessageReceived;
@@ -40,7 +40,7 @@ namespace Andead.Chat.Client.WinForms
 
         private async void OnTimerOnTick(object sender, EventArgs args)
         {
-            int? onlineCount = await Client.GetOnlineCountAsync();
+            int? onlineCount = await _client.GetOnlineCountAsync();
             if (_onlineCount == onlineCount)
             {
                 return;
@@ -49,7 +49,7 @@ namespace Andead.Chat.Client.WinForms
             _onlineCount = onlineCount;
             UpdateOnlineCount(onlineCount);
 
-            string[] names = await Client.GetNamesOnlineAsync();
+            string[] names = await _client.GetNamesOnlineAsync();
             UpdateNames(names.ToArray<object>());
         }
 
@@ -67,7 +67,8 @@ namespace Andead.Chat.Client.WinForms
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            Client.MessageReceived -= ClientOnMessageReceived;
+            _client.SignOutAsync();
+            _client.MessageReceived -= ClientOnMessageReceived;
 
             _onlineCountTimer?.Stop();
 
@@ -110,7 +111,7 @@ namespace Andead.Chat.Client.WinForms
             try
             {
                 sendButton.Enabled = false;
-                result = await Client.SendAsync(message);
+                result = await _client.SendAsync(message);
             }
             finally
             {

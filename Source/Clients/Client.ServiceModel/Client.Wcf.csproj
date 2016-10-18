@@ -7,8 +7,8 @@
     <ProjectGuid>{D61E670C-6C48-4133-A144-05C161146742}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Andead.Chat.Client.ServiceModel</RootNamespace>
-    <AssemblyName>Client.ServiceModel</AssemblyName>
+    <RootNamespace>Andead.Chat.Client.Wcf</RootNamespace>
+    <AssemblyName>Client.Wcf</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -34,31 +34,24 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\ConnectionConfiguration.cs" />
-    <Compile Include="Interfaces\IChatServiceFactory.cs" />
-    <Compile Include="Interfaces\IConnectionConfigurationProvider.cs" />
-    <Compile Include="Services\WcfChatServiceFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service References\ChatService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="Services\DefaultConnectionConfigurationProvider.cs" />
-    <Compile Include="Services\ServiceClient.cs" />
+    <Compile Include="ServiceClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-    <None Include="Service References\ChatService\Andead.Chat.Client.ServiceModel.ChatService.SendMessageResponse.datasource">
+    <None Include="Service References\ChatService\Andead.Chat.Client.Wcf.ChatService.SendMessageResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\ChatService\Andead.Chat.Client.ServiceModel.ChatService.SignInResponse.datasource">
+    <None Include="Service References\ChatService\Andead.Chat.Client.Wcf.ChatService.SignInResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\ChatService\Service.wsdl" />
@@ -99,6 +92,7 @@
       <Name>Client</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

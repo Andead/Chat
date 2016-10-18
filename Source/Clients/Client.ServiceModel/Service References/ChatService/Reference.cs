@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Andead.Chat.Client.ServiceModel.ChatService {
+namespace Andead.Chat.Client.Wcf.ChatService {
     using System.Runtime.Serialization;
     using System;
     
@@ -226,14 +226,14 @@ namespace Andead.Chat.Client.ServiceModel.ChatService {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ChatService.IChatService", CallbackContract=typeof(Andead.Chat.Client.ServiceModel.ChatService.IChatServiceCallback))]
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ChatService.IChatService", CallbackContract=typeof(Andead.Chat.Client.Wcf.ChatService.IChatServiceCallback))]
     public interface IChatService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/SignIn", ReplyAction="http://tempuri.org/IChatService/SignInResponse")]
-        Andead.Chat.Client.ServiceModel.ChatService.SignInResponse SignIn(Andead.Chat.Client.ServiceModel.ChatService.SignInRequest request);
+        Andead.Chat.Client.Wcf.ChatService.SignInResponse SignIn(Andead.Chat.Client.Wcf.ChatService.SignInRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/SignIn", ReplyAction="http://tempuri.org/IChatService/SignInResponse")]
-        System.Threading.Tasks.Task<Andead.Chat.Client.ServiceModel.ChatService.SignInResponse> SignInAsync(Andead.Chat.Client.ServiceModel.ChatService.SignInRequest request);
+        System.Threading.Tasks.Task<Andead.Chat.Client.Wcf.ChatService.SignInResponse> SignInAsync(Andead.Chat.Client.Wcf.ChatService.SignInRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/SignOut", ReplyAction="http://tempuri.org/IChatService/SignOutResponse")]
         void SignOut();
@@ -242,10 +242,10 @@ namespace Andead.Chat.Client.ServiceModel.ChatService {
         System.Threading.Tasks.Task SignOutAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/SendMessage", ReplyAction="http://tempuri.org/IChatService/SendMessageResponse")]
-        Andead.Chat.Client.ServiceModel.ChatService.SendMessageResponse SendMessage(Andead.Chat.Client.ServiceModel.ChatService.SendMessageRequest request);
+        Andead.Chat.Client.Wcf.ChatService.SendMessageResponse SendMessage(Andead.Chat.Client.Wcf.ChatService.SendMessageRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/SendMessage", ReplyAction="http://tempuri.org/IChatService/SendMessageResponse")]
-        System.Threading.Tasks.Task<Andead.Chat.Client.ServiceModel.ChatService.SendMessageResponse> SendMessageAsync(Andead.Chat.Client.ServiceModel.ChatService.SendMessageRequest request);
+        System.Threading.Tasks.Task<Andead.Chat.Client.Wcf.ChatService.SendMessageResponse> SendMessageAsync(Andead.Chat.Client.Wcf.ChatService.SendMessageRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/GetOnlineCount", ReplyAction="http://tempuri.org/IChatService/GetOnlineCountResponse")]
         System.Nullable<int> GetOnlineCount();
@@ -268,12 +268,12 @@ namespace Andead.Chat.Client.ServiceModel.ChatService {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface IChatServiceChannel : Andead.Chat.Client.ServiceModel.ChatService.IChatService, System.ServiceModel.IClientChannel {
+    public interface IChatServiceChannel : Andead.Chat.Client.Wcf.ChatService.IChatService, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class ChatServiceClient : System.ServiceModel.DuplexClientBase<Andead.Chat.Client.ServiceModel.ChatService.IChatService>, Andead.Chat.Client.ServiceModel.ChatService.IChatService {
+    public partial class ChatServiceClient : System.ServiceModel.DuplexClientBase<Andead.Chat.Client.Wcf.ChatService.IChatService>, Andead.Chat.Client.Wcf.ChatService.IChatService {
         
         public ChatServiceClient(System.ServiceModel.InstanceContext callbackInstance) : 
                 base(callbackInstance) {
@@ -295,11 +295,11 @@ namespace Andead.Chat.Client.ServiceModel.ChatService {
                 base(callbackInstance, binding, remoteAddress) {
         }
         
-        public Andead.Chat.Client.ServiceModel.ChatService.SignInResponse SignIn(Andead.Chat.Client.ServiceModel.ChatService.SignInRequest request) {
+        public Andead.Chat.Client.Wcf.ChatService.SignInResponse SignIn(Andead.Chat.Client.Wcf.ChatService.SignInRequest request) {
             return base.Channel.SignIn(request);
         }
         
-        public System.Threading.Tasks.Task<Andead.Chat.Client.ServiceModel.ChatService.SignInResponse> SignInAsync(Andead.Chat.Client.ServiceModel.ChatService.SignInRequest request) {
+        public System.Threading.Tasks.Task<Andead.Chat.Client.Wcf.ChatService.SignInResponse> SignInAsync(Andead.Chat.Client.Wcf.ChatService.SignInRequest request) {
             return base.Channel.SignInAsync(request);
         }
         
@@ -311,11 +311,11 @@ namespace Andead.Chat.Client.ServiceModel.ChatService {
             return base.Channel.SignOutAsync();
         }
         
-        public Andead.Chat.Client.ServiceModel.ChatService.SendMessageResponse SendMessage(Andead.Chat.Client.ServiceModel.ChatService.SendMessageRequest request) {
+        public Andead.Chat.Client.Wcf.ChatService.SendMessageResponse SendMessage(Andead.Chat.Client.Wcf.ChatService.SendMessageRequest request) {
             return base.Channel.SendMessage(request);
         }
         
-        public System.Threading.Tasks.Task<Andead.Chat.Client.ServiceModel.ChatService.SendMessageResponse> SendMessageAsync(Andead.Chat.Client.ServiceModel.ChatService.SendMessageRequest request) {
+        public System.Threading.Tasks.Task<Andead.Chat.Client.Wcf.ChatService.SendMessageResponse> SendMessageAsync(Andead.Chat.Client.Wcf.ChatService.SendMessageRequest request) {
             return base.Channel.SendMessageAsync(request);
         }
         

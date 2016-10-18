@@ -1,16 +1,27 @@
 ﻿using System;
 using System.Windows.Forms;
 using Andead.Chat.Client.Entities;
-using Andead.Chat.Client.ServiceModel.Services;
+using Andead.Chat.Client.Wcf;
 using Andead.Chat.Client.WinForms.Properties;
 
 namespace Andead.Chat.Client.WinForms
 {
     public partial class LoginForm : Form
     {
+        private readonly ServiceClient _client;
+
         public LoginForm()
         {
             InitializeComponent();
+
+            _client = new ServiceClient();
+            _client.Connect(new ConnectionConfiguration
+            {
+                ServerName = Settings.Default.ServerName,
+                Protocol = Settings.Default.Protocol,
+                Port = Settings.Default.Port,
+                TimeOut = Settings.Default.Timeout
+            });
 
             nameTextBox.Text = Settings.Default.Username;
         }
@@ -22,16 +33,13 @@ namespace Andead.Chat.Client.WinForms
 
         private async void signInButton_Click(Object sender, EventArgs e)
         {
-            var client = new ServiceClient(new ApplicationSettingsConnectionConfigurationProvider(),
-                new WcfChatServiceFactory());
-
             string name = nameTextBox.Text;
             SignInResult result;
 
             try
             {
                 ((Button) sender).Enabled = false;
-                result = await client.SignInAsync(name);
+                result = await _client.SignInAsync(name);
             }
             finally
             {
@@ -44,28 +52,11 @@ namespace Andead.Chat.Client.WinForms
                 return;
             }
 
-            var chatForm = new ChatForm(client);
-            chatForm.Closed += ChatFormOnClosed;
+            var chatForm = new ChatForm(_client);
+            chatForm.Closed += (o, args) => Show();
             chatForm.Show();
 
             Hide();
-        }
-
-        private async void ChatFormOnClosed(object sender, EventArgs eventArgs)
-        {
-            var chatForm = (ChatForm) sender;
-
-            if (chatForm.Client != null)
-            {
-                if (chatForm.Client.SignedIn)
-                {
-                    await chatForm.Client.SignOutAsync();
-                }
-
-                chatForm.Client.Dispose();
-            }
-
-            Show();
         }
     }
 }

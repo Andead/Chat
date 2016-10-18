@@ -54,7 +54,6 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApplicationSettingsConnectionConfigurationProvider.cs" />
     <Compile Include="ChatForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -99,9 +98,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Client.ServiceModel\Client.ServiceModel.csproj">
+    <ProjectReference Include="..\Client.ServiceModel\Client.Wcf.csproj">
       <Project>{d61e670c-6c48-4133-a144-05c161146742}</Project>
-      <Name>Client.ServiceModel</Name>
+      <Name>Client.Wcf</Name>
     </ProjectReference>
     <ProjectReference Include="..\Client\Client.csproj">
       <Project>{0BA78689-340C-4A32-9DE2-D61B52460B55}</Project>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Andead.Chat.Server;
 using Andead.Chat.Server.Wcf;
@@ -11,9 +12,11 @@ namespace ServiceHost
         private static System.ServiceModel.ServiceHost _host;
         private static readonly ILogger Logger = LogManager.GetCurrentClassLogger();
 
-        private static void Main()
+        private static void Main(params string[] args)
         {
-            Console.CancelKeyPress += (sender, args) => CloseHost();
+            RenderArgs(args);
+
+            Console.CancelKeyPress += (o, e) => CloseHost();
 
             try
             {
@@ -38,6 +41,16 @@ namespace ServiceHost
             {
                 // Stop
                 CloseHost();
+            }
+        }
+
+        private static void RenderArgs(IEnumerable<string> args)
+        {
+            if (String.Equals(args?.ElementAtOrDefault(0), "/hide", StringComparison.OrdinalIgnoreCase))
+            {
+                IntPtr handle = NativeMethods.GetConsoleWindow();
+
+                NativeMethods.ShowWindow(handle, NativeMethods.SW_HIDE);
             }
         }
 
