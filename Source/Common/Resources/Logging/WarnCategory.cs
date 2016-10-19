@@ -6,6 +6,8 @@
 
         Validate,
 
-        AccessDenied
+        AccessDenied,
+
+        UnexpectedBehavior
     }
 }

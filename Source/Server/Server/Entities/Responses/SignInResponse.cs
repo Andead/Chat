@@ -15,6 +15,9 @@ namespace Andead.Chat.Server
         [DataMember]
         public string Message { get; set; }
 
+        [DataMember]
+        public int OnlineCount { get; set; }
+
         public static SignInResponse Successful(string message = "Welcome!")
         {
             return new SignInResponse

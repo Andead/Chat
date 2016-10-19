@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ServiceModel;
 using System.Threading.Tasks;
-using Andead.Chat.Client.Entities;
+using Andead.Chat.Client;
 using Andead.Chat.Client.Wcf;
 using Andead.Chat.Client.Wcf.ChatService;
 using Moq;
@@ -88,42 +88,6 @@ namespace ClientsTests
             await client.SignOutAsync();
 
             Assert.IsFalse(client.SignedIn);
-        }
-
-        [Test]
-        public void ServiceClient_GetOnlineCount_ReturnsCorrectValue()
-        {
-            int? testValue = 3;
-
-            var serviceMock = new Mock<IChatService>();
-            serviceMock.Setup(s => s.GetOnlineCount())
-                .Returns(testValue);
-            serviceMock.Setup(s => s.GetOnlineCountAsync())
-                .Returns(() => Task.FromResult(testValue));
-
-            ServiceClient client = CreateClient(serviceMock.Object);
-
-            int? result = client.GetOnlineCount();
-
-            Assert.AreEqual(testValue, result);
-        }
-
-        [Test]
-        public async Task ServiceClient_GetOnlineCountAsync_ReturnsCorrectValue()
-        {
-            int? testValue = 3;
-
-            var serviceMock = new Mock<IChatService>();
-            serviceMock.Setup(s => s.GetOnlineCount())
-                .Returns(testValue);
-            serviceMock.Setup(s => s.GetOnlineCountAsync())
-                .Returns(() => Task.FromResult(testValue));
-
-            ServiceClient client = CreateClient(serviceMock.Object);
-
-            int? result = await client.GetOnlineCountAsync();
-
-            Assert.AreEqual(testValue, result);
         }
 
         [Test]

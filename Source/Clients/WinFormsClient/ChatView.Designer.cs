@@ -1,6 +1,6 @@
 ﻿namespace Andead.Chat.Client.WinForms
 {
-    partial class ChatForm
+    internal partial class ChatView
     {
         /// <summary>
         /// Required designer variable.
@@ -64,7 +64,7 @@
             this.sendButton.TabIndex = 1;
             this.sendButton.Text = "Send";
             this.sendButton.UseVisualStyleBackColor = true;
-            this.sendButton.Click += new System.EventHandler(this.button1_Click);
+            this.sendButton.Click += new System.EventHandler(this.sendButton_Click);
             // 
             // messageTextBox
             // 
@@ -76,7 +76,7 @@
             this.messageTextBox.Name = "messageTextBox";
             this.messageTextBox.Size = new System.Drawing.Size(780, 24);
             this.messageTextBox.TabIndex = 0;
-            this.messageTextBox.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            this.messageTextBox.TextChanged += new System.EventHandler(this.messageTextBox_TextChanged);
             // 
             // namesListBox
             // 
@@ -124,7 +124,7 @@
             this.Controls.Add(this.sendButton);
             this.Controls.Add(this.messageTextBox);
             this.MinimumSize = new System.Drawing.Size(300, 180);
-            this.Name = "ChatForm";
+            this.Name = "ChatView";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Chat";

@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace Andead.Chat.Client.Entities
+﻿namespace Andead.Chat.Client
 {
-    public sealed class MessageReceivedEventArgs : EventArgs
+    public sealed class MessageReceivedEventArgs : System.EventArgs
     {
         public MessageReceivedEventArgs(string message)
         {

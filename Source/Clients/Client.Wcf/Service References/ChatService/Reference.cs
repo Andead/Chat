@@ -71,6 +71,9 @@ namespace Andead.Chat.Client.Wcf.ChatService {
         private string MessageField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int OnlineCountField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private bool SuccessField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
@@ -92,6 +95,19 @@ namespace Andead.Chat.Client.Wcf.ChatService {
                 if ((object.ReferenceEquals(this.MessageField, value) != true)) {
                     this.MessageField = value;
                     this.RaisePropertyChanged("Message");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int OnlineCount {
+            get {
+                return this.OnlineCountField;
+            }
+            set {
+                if ((this.OnlineCountField.Equals(value) != true)) {
+                    this.OnlineCountField = value;
+                    this.RaisePropertyChanged("OnlineCount");
                 }
             }
         }
@@ -265,6 +281,9 @@ namespace Andead.Chat.Client.Wcf.ChatService {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IChatService/ReceiveMessage")]
         void ReceiveMessage(string message);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IChatService/UpdateOnlineCount")]
+        void UpdateOnlineCount(int value);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]

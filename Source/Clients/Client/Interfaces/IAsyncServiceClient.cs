@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
-using Andead.Chat.Client.Entities;
 
-namespace Andead.Chat.Client.Interfaces
+namespace Andead.Chat.Client
 {
     public interface IAsyncServiceClient : IServiceClient
     {
@@ -15,11 +14,6 @@ namespace Andead.Chat.Client.Interfaces
         ///     Performs sign-out asynchronously.
         /// </summary>
         Task SignOutAsync();
-
-        /// <summary>
-        ///     Gets the number of online users asynchronously.
-        /// </summary>
-        Task<int?> GetOnlineCountAsync();
 
         /// <summary>
         ///     Gets the names of online users asynchronously.

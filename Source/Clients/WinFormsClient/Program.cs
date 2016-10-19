@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Windows.Forms;
 
 namespace Andead.Chat.Client.WinForms
 {
@@ -11,9 +10,7 @@ namespace Andead.Chat.Client.WinForms
         [STAThread]
         private static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new LoginForm());
+            new Bootstrapper().Run();
         }
     }
 }

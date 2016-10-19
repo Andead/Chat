@@ -7,5 +7,8 @@ namespace Andead.Chat.Server
     {
         [OperationContract(IsOneWay = true)]
         void ReceiveMessage(string message);
+
+        [OperationContract(IsOneWay = true)]
+        void UpdateOnlineCount(int value);
     }
 }

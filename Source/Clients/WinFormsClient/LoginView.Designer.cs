@@ -1,6 +1,6 @@
 ﻿namespace Andead.Chat.Client.WinForms
 {
-    partial class LoginForm
+    internal partial class LoginView
     {
         /// <summary>
         /// Required designer variable.
@@ -39,7 +39,7 @@
             this.nameTextBox.Name = "nameTextBox";
             this.nameTextBox.Size = new System.Drawing.Size(132, 20);
             this.nameTextBox.TabIndex = 0;
-            this.nameTextBox.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            this.nameTextBox.TextChanged += new System.EventHandler(this.nameTextBox_TextChanged);
             // 
             // label1
             // 
@@ -72,7 +72,7 @@
             this.Controls.Add(this.nameTextBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
-            this.Name = "LoginForm";
+            this.Name = "LoginView";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Login";

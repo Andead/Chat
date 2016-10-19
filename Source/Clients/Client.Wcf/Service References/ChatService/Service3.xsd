@@ -9,6 +9,7 @@
   <xs:complexType name="SignInResponse">
     <xs:sequence>
       <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="OnlineCount" type="xs:int" />
       <xs:element minOccurs="0" name="Success" type="xs:boolean" />
     </xs:sequence>
   </xs:complexType>

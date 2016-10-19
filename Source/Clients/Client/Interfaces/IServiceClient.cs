@@ -1,7 +1,6 @@
 ﻿using System;
-using Andead.Chat.Client.Entities;
 
-namespace Andead.Chat.Client.Interfaces
+namespace Andead.Chat.Client
 {
     public interface IServiceClient
     {
@@ -37,11 +36,6 @@ namespace Andead.Chat.Client.Interfaces
         void SignOut();
 
         /// <summary>
-        ///     Gets the number of online users.
-        /// </summary>
-        int? GetOnlineCount();
-
-        /// <summary>
         ///     Gets the names of online users.
         /// </summary>
         string[] GetNamesOnline();
@@ -55,5 +49,10 @@ namespace Andead.Chat.Client.Interfaces
         ///     Raises when a message is received.
         /// </summary>
         event EventHandler<MessageReceivedEventArgs> MessageReceived;
+
+        /// <summary>
+        ///     Raises when online users count is updated.
+        /// </summary>
+        event EventHandler<OnlineCountUpdatedEventArgs> OnlineCountUpdated;
     }
 }

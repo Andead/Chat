@@ -1,13 +1,11 @@
 ﻿using System;
 using System.ServiceModel;
 using System.Threading.Tasks;
-using Andead.Chat.Client.Entities;
-using Andead.Chat.Client.Interfaces;
 using Andead.Chat.Client.Wcf.ChatService;
 
 namespace Andead.Chat.Client.Wcf
 {
-    public class ServiceClient : IAsyncServiceClient, IChatServiceCallback
+    public class ServiceClient : IAsyncServiceClient, IChatServiceCallback, IDisposable
     {
         private TimeSpan _timeout;
 
@@ -19,6 +17,8 @@ namespace Andead.Chat.Client.Wcf
         public bool SignedIn { get; private set; }
 
         public virtual event EventHandler<MessageReceivedEventArgs> MessageReceived;
+
+        public event EventHandler<OnlineCountUpdatedEventArgs> OnlineCountUpdated;
 
         public string ServerName { get; private set; }
 
@@ -64,7 +64,13 @@ namespace Andead.Chat.Client.Wcf
 
             SignedIn = response.Success;
 
-            return new SignInResult(response.Success, response.Message);
+            if (response.Success)
+            {
+                OnOnlineCountUpdated(response.OnlineCount);
+                OnMessageReceived(response.Message);
+            }
+
+            return new SignInResult(response.Success, response.Message, response.OnlineCount);
         }
 
         public async Task<SignInResult> SignInAsync(string name)
@@ -75,7 +81,7 @@ namespace Andead.Chat.Client.Wcf
 
             SignedIn = response.Success;
 
-            return new SignInResult(response.Success, response.Message);
+            return new SignInResult(response.Success, response.Message, response.OnlineCount);
         }
 
         public void SignOut()
@@ -90,16 +96,6 @@ namespace Andead.Chat.Client.Wcf
             await Service.SignOutAsync();
 
             SignedIn = false;
-        }
-
-        public int? GetOnlineCount()
-        {
-            return Service.GetOnlineCount();
-        }
-
-        public async Task<int?> GetOnlineCountAsync()
-        {
-            return await Service.GetOnlineCountAsync();
         }
 
         public SendMessageResult Send(string message)
@@ -136,7 +132,27 @@ namespace Andead.Chat.Client.Wcf
 
         void IChatServiceCallback.ReceiveMessage(string message)
         {
+            OnMessageReceived(message);
+        }
+
+        private void OnMessageReceived(string message)
+        {
             MessageReceived?.Invoke(this, new MessageReceivedEventArgs(message));
+        }
+
+        void IChatServiceCallback.UpdateOnlineCount(int value)
+        {
+            OnOnlineCountUpdated(value);
+        }
+
+        private void OnOnlineCountUpdated(int value)
+        {
+            OnlineCountUpdated?.Invoke(this, new OnlineCountUpdatedEventArgs(value));
+        }
+
+        public void Dispose()
+        {
+            Disconnect();
         }
     }
 }

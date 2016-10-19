@@ -1,4 +1,4 @@
-﻿namespace Andead.Chat.Client.Entities
+﻿namespace Andead.Chat.Client
 {
     public class SendMessageResult
     {
