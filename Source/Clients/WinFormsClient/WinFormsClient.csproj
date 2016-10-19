@@ -59,10 +59,10 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ChatView.cs">
+    <Compile Include="Views\ChatView.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ChatView.Designer.cs">
+    <Compile Include="Views\ChatView.Designer.cs">
       <DependentUpon>ChatView.cs</DependentUpon>
     </Compile>
     <Compile Include="Bootstrapper.cs" />
@@ -71,10 +71,10 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="LoginView.cs">
+    <Compile Include="Views\LoginView.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LoginView.Designer.cs">
+    <Compile Include="Views\LoginView.Designer.cs">
       <DependentUpon>LoginView.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
@@ -83,10 +83,10 @@
     <Compile Include="Views\View.cs">
       <SubType>Form</SubType>
     </Compile>
-    <EmbeddedResource Include="ChatView.resx">
+    <EmbeddedResource Include="Views\ChatView.resx">
       <DependentUpon>ChatView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="LoginView.resx">
+    <EmbeddedResource Include="Views\LoginView.resx">
       <DependentUpon>LoginView.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
