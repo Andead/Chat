@@ -52,7 +52,7 @@ namespace Andead.Chat.Client
 
         private void CreateCommands()
         {
-            SignInCommand = new RelayCommand(ExecuteSignIn, () => SignInEnabled);
+            SignInCommand = new DelegateCommand(ExecuteSignIn, () => SignInEnabled);
         }
 
         private async void ExecuteSignIn()

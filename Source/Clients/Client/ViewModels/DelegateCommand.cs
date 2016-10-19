@@ -3,12 +3,12 @@ using System.Windows.Input;
 
 namespace Andead.Chat.Client
 {
-    public class RelayCommand : ICommand
+    public class DelegateCommand : ICommand
     {
         private readonly Func<bool> _canExecute;
         private readonly Action _execute;
 
-        public RelayCommand(Action execute, Func<bool> canExecute)
+        public DelegateCommand(Action execute, Func<bool> canExecute)
         {
             if (execute == null)
             {

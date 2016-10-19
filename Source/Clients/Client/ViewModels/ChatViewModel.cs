@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Windows.Input;
 
 namespace Andead.Chat.Client
@@ -87,7 +88,7 @@ namespace Andead.Chat.Client
 
         private void CreateCommands()
         {
-            SendMessageCommand = new RelayCommand(ExecuteSendMessage, () => SendEnabled);
+            SendMessageCommand = new DelegateCommand(ExecuteSendMessage, () => SendEnabled);
         }
 
         private void ClientOnMessageReceived(object sender, MessageReceivedEventArgs args)
@@ -127,7 +128,7 @@ namespace Andead.Chat.Client
                 names = _client.GetNamesOnline();
             }
 
-            OnlineNames = new ObservableCollection<string>(names);
+            OnlineNames = names;
         }
 
         private async void ExecuteSendMessage()
@@ -154,6 +155,10 @@ namespace Andead.Chat.Client
                 {
                     Message = null;
                 }
+            }
+            catch(Exception e)
+            {
+                OnError(new ErrorEventArgs(e));
             }
             finally
             {
