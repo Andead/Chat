@@ -170,7 +170,7 @@ namespace Andead.Chat.Server
 
         private void BroadcastUpdateOnlineCount()
         {
-            PerformAction(c => c.UpdateOnlineCount(_clients.Count));
+            PerformAction(c => c.UpdateOnlineCount(_clients.Count), true);
 
             _logger.Trace($"Updated online count for all clients: {_clients.Count}.");
         }
@@ -182,7 +182,7 @@ namespace Andead.Chat.Server
             _logger.Trace(message);
         }
 
-        private void PerformAction(Action<IChatClient> action)
+        private void PerformAction(Action<IChatClient> action, bool repeatAfterRemoval = false)
         {
             var toRemove = new List<IChatClient>();
 
@@ -210,7 +210,10 @@ namespace Andead.Chat.Server
                         _clients.Remove(client);
                     }
 
-                    PerformAction(action);
+                    if (repeatAfterRemoval)
+                    {
+                        PerformAction(action);
+                    }
                 }
             }
         }
