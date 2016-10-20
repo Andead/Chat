@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Input;
+using GalaSoft.MvvmLight.CommandWpf;
 
 namespace Andead.Chat.Client
 {
@@ -52,7 +53,7 @@ namespace Andead.Chat.Client
 
         private void CreateCommands()
         {
-            SignInCommand = new DelegateCommand(ExecuteSignIn, () => SignInEnabled);
+            SignInCommand = new RelayCommand(ExecuteSignIn, () => SignInEnabled);
         }
 
         private async void ExecuteSignIn()

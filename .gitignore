@@ -242,4 +242,4 @@ ModelManifest.xml
 .fake/
 
 *.vshost.exe*
-/Binaries/*/NLog.xml
+/Binaries/**/*.xml

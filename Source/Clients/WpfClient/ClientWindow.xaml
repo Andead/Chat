@@ -1,0 +1,18 @@
+﻿<controls:MetroWindow
+    x:Class="Andead.Chat.Clients.Wpf.ClientWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    mc:Ignorable="d"
+    xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+    GlowBrush="{StaticResource AccentColorBrush}"
+    WindowStartupLocation="CenterScreen"
+    ShowMaxRestoreButton="False"
+    ResizeMode="CanMinimize"
+    SizeToContent="WidthAndHeight">
+    
+    <Grid Margin="5">
+        <ContentControl x:Name="ContentControl" />
+    </Grid>
+</controls:MetroWindow>

@@ -44,12 +44,8 @@ namespace Andead.Chat.Client.WinForms
         {
             switch (propertyName)
             {
-                case nameof(ChatViewModel.ServerName):
-                    UpdateText();
-                    return;
-                case nameof(ChatViewModel.OnlineCount):
-                    UpdateText();
-                    ViewModel.UpdateOnlineNames();
+                case nameof(ChatViewModel.Title):
+                    Text = ViewModel.Title;
                     return;
                 case nameof(ChatViewModel.OnlineNames):
                     UpdateOnlineNames();
@@ -68,13 +64,6 @@ namespace Andead.Chat.Client.WinForms
                     base.Set(propertyName);
                     return;
             }
-        }
-
-        private void UpdateText()
-        {
-            Text = ViewModel.OnlineCount.HasValue
-                ? $"{ViewModel.ServerName} ({ViewModel.OnlineCount} users)"
-                : $"{ViewModel.ServerName}";
         }
 
         private void UpdateOnlineNames()

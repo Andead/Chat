@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows.Input;
+using GalaSoft.MvvmLight.CommandWpf;
 
 namespace Andead.Chat.Client
 {
@@ -14,6 +16,7 @@ namespace Andead.Chat.Client
         private IReadOnlyCollection<string> _onlineNames;
         private bool _sendEnabled;
         private string _serverName;
+        private string _title;
 
         public ChatViewModel(IServiceClient client)
         {
@@ -34,13 +37,37 @@ namespace Andead.Chat.Client
         public int? OnlineCount
         {
             get { return _onlineCount; }
-            set { Set(ref _onlineCount, value); }
+            set
+            {
+                if (Set(ref _onlineCount, value))
+                {
+                    UpdateTitle();
+                    Task.Run(() => UpdateOnlineNames());
+                }
+            }
+        }
+
+        private void UpdateTitle()
+        {
+            Title = OnlineCount.HasValue
+                ? $"{ServerName} ({OnlineCount} users)"
+                : $"{ServerName}";
+        }
+
+        public string Title
+        {
+            get { return _title; }
+            private set { Set(ref _title, value); }
         }
 
         public string ServerName
         {
             get { return _serverName; }
-            private set { Set(ref _serverName, value); }
+            private set
+            {
+                Set(ref _serverName, value);
+                UpdateTitle();
+            }
         }
 
         public IReadOnlyCollection<string> OnlineNames
@@ -88,7 +115,7 @@ namespace Andead.Chat.Client
 
         private void CreateCommands()
         {
-            SendMessageCommand = new DelegateCommand(ExecuteSendMessage, () => SendEnabled);
+            SendMessageCommand = new RelayCommand(ExecuteSendMessage, () => SendEnabled);
         }
 
         private void ClientOnMessageReceived(object sender, MessageReceivedEventArgs args)
@@ -136,7 +163,6 @@ namespace Andead.Chat.Client
             try
             {
                 SendMessageResult result;
-
                 SendEnabled = false;
 
                 var asyncServiceClient = _client as IAsyncServiceClient;
@@ -156,12 +182,9 @@ namespace Andead.Chat.Client
                     Message = null;
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 OnError(new ErrorEventArgs(e));
-            }
-            finally
-            {
                 SendEnabled = true;
             }
         }
