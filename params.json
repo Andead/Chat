@@ -1,0 +1,6 @@
+{
+  "name": "Chat",
+  "tagline": "A simple client-server chat",
+  "body": "# Chat\r\nA simple client-server chat implementation based on WCF.\r\n\r\n![WPF Client app](https://github.com/AndeadFMP/Chat/blob/master/docs/screenshot.png)\r\n\r\nServer part - WCF service, hosted in a console application (or IIS). Currently no security used. Listens to a 808 port in duplex mode using net.tcp protocol.  \r\nClient part - a WinForms and a WPF application.  \r\n\r\nRequires .NET Framework 4.6.1. \r\n\r\nUsed libraries:  \r\n[NUnit](https://github.com/nunit/nunit)  \r\n[Moq](https://github.com/moq/moq)  \r\n[NLog](https://github.com/NLog/NLog)  \r\n[MahApps.Metro](https://github.com/MahApps/MahApps.Metro/)  \r\n[MvvmLight](https://mvvmlight.codeplex.com/)  \r\n[Autofac](https://github.com/autofac/Autofac)  \r\n",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
