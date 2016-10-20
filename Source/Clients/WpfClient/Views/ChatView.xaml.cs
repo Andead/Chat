@@ -52,11 +52,20 @@ namespace Andead.Chat.Clients.Wpf
                     MessagesTextBox.AppendText(message + Environment.NewLine);
                 }
 
-                if (Window.GetWindow(this)?.WindowState == WindowState.Minimized)
+                Window window = Window.GetWindow(this);
+                if (window == null)
                 {
-                    Task.Run(new Action(FlashWhileMinimized));
-                    Window.GetWindow(this).StartFlashing();
+                    return;
                 }
+
+                if (window.IsActive && window.WindowState != WindowState.Minimized)
+                {
+                    MessagesTextBox.ScrollToEnd();
+                    return;
+                }
+
+                Task.Run(new Action(FlashWhileMinimized));
+                window.StartFlashing();
             }
         }
 
