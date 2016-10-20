@@ -2,6 +2,8 @@
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Andead.Chat.Client.WinForms.Utilities;
 
@@ -37,7 +39,26 @@ namespace Andead.Chat.Client.WinForms
                         chatTextBox.AppendText(message + Environment.NewLine);
                     }
                 }
+
+                if (WindowState == FormWindowState.Minimized)
+                {
+                    Task.Run(new Action(FlashWhileMinimized));
+                }
             });
+        }
+
+        private void FlashWhileMinimized()
+        {
+            Invoke(new Action(() => FlashWindow.Start(this)));
+
+            var windowState = FormWindowState.Minimized;
+            while (windowState == FormWindowState.Minimized)
+            {
+                Thread.Sleep(100);
+                Invoke(new Action(() => windowState = WindowState));
+            }
+
+            Invoke(new Action(() => FlashWindow.Stop(this)));
         }
 
         protected override void Set(string propertyName)

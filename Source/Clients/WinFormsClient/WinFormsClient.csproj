@@ -59,6 +59,8 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Utilities\FlashWindow.cs" />
+    <Compile Include="Utilities\NativeMethods.cs" />
     <Compile Include="Views\ChatView.cs">
       <SubType>Form</SubType>
     </Compile>

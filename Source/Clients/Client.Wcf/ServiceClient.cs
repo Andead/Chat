@@ -55,7 +55,6 @@ namespace Andead.Chat.Client.Wcf
         {
             try
             {
-
                 ((ICommunicationObject) Service).Close(_timeout);
             }
             catch (CommunicationObjectFaultedException)
