@@ -68,7 +68,7 @@ namespace Common.Tests
             var target = new TestTarget<UnhandledExceptionEventArgs>(eventArgs);
 
             var subscriber = new Mock<TestSubscriber>();
-            target.Test += new OnceEventHandler<UnhandledExceptionEventArgs>(subscriber.Object.OnTargetEvent);
+            target.Test += new OneTimeEventHandler<UnhandledExceptionEventArgs>(subscriber.Object.OnTargetEvent);
 
             target.Raise();
             target.Raise();

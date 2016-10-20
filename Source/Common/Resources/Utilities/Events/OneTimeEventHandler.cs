@@ -36,21 +36,21 @@ namespace Andead.Chat.Common.Utilities
         }
     }
 
-    public class OnceEventHandler<TEventArgs>
+    public class OneTimeEventHandler<TEventArgs>
     {
         private EventHandler<TEventArgs> _eventHandler;
 
-        public OnceEventHandler(EventHandler<TEventArgs> eventHandler)
+        public OneTimeEventHandler(EventHandler<TEventArgs> eventHandler)
         {
             _eventHandler = eventHandler;
         }
 
-        public OnceEventHandler(Action eventHandler)
+        public OneTimeEventHandler(Action eventHandler)
         {
             _eventHandler = (sender, args) => eventHandler();
         }
 
-        public OnceEventHandler(Action<TEventArgs> eventHandler)
+        public OneTimeEventHandler(Action<TEventArgs> eventHandler)
         {
             _eventHandler = (sender, args) => eventHandler(args);
         }
@@ -64,9 +64,9 @@ namespace Andead.Chat.Common.Utilities
             }
         }
 
-        public static implicit operator EventHandler<TEventArgs>(OnceEventHandler<TEventArgs> onceEventHandler)
+        public static implicit operator EventHandler<TEventArgs>(OneTimeEventHandler<TEventArgs> oneTimeEventHandler)
         {
-            return onceEventHandler.Invoke;
+            return oneTimeEventHandler.Invoke;
         }
     }
 }

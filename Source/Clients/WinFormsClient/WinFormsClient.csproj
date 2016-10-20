@@ -109,6 +109,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Common\Resources\Common.csproj">
+      <Project>{F9E6727D-BB3B-484B-B4DC-4067F4EFDF80}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Client.Wcf\Client.Wcf.csproj">
       <Project>{d61e670c-6c48-4133-a144-05c161146742}</Project>
       <Name>Client.Wcf</Name>

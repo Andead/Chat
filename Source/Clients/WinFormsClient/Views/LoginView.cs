@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using Andead.Chat.Client.WinForms.Properties;
+using Andead.Chat.Common.Utilities;
 
 namespace Andead.Chat.Client.WinForms
 {
@@ -32,7 +33,12 @@ namespace Andead.Chat.Client.WinForms
             }
 
             var chatForm = new ChatView(args.ChatViewModel);
-            chatForm.Closed += (o, e) => Show();
+            chatForm.Closed += new OneTimeEventHandler(() =>
+            {
+                Show();
+                ViewModel.Reload();
+            });
+
             chatForm.Show();
 
             Hide();

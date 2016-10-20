@@ -23,21 +23,29 @@ namespace Andead.Chat.Client.WinForms
                 TimeOut = Settings.Default.Timeout
             };
 
-            using (var client = new ServiceClient())
+            var loginViewModel = new LoginViewModel(new ServiceClientFactory(), configuration);
+            var loginForm = new LoginView(loginViewModel);
+
+            try
             {
-                client.Connect(configuration);
+                Application.Run(loginForm);
+            }
+            catch (Exception e)
+            {
+                logger.Fatal(e);
+            }
+        }
 
-                var loginViewModel = new LoginViewModel(client);
-                var loginForm = new LoginView(loginViewModel);
+        private class ServiceClientFactory : IServiceClientFactory
+        {
+            public IAsyncServiceClient GetAsyncServiceClient()
+            {
+                return new ServiceClient();
+            }
 
-                try
-                {
-                    Application.Run(loginForm);
-                }
-                catch (Exception e)
-                {
-                    logger.Fatal(e);
-                }
+            public IServiceClient GetServiceClient()
+            {
+                return new ServiceClient();
             }
         }
     }
