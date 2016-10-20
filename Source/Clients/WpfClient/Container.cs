@@ -44,10 +44,16 @@ namespace Andead.Chat.Clients.Wpf
 
         public void Run()
         {
-            var loginViewModel = _container.Resolve<LoginViewModel>();
-            ClientWindow window = ClientWindow.Create("Login", loginViewModel);
+            var window = new ClientWindow
+            {
+                Title = "Login",
+                DataContext = _container.Resolve<LoginViewModel>(),
+                ContentControl = {Content = _container.Resolve<IViewFactory>().GetView<LoginViewModel>()},
+                SizeToContent = SizeToContent.WidthAndHeight,
+                MinWidth = 300,
+                ResizeMode = ResizeMode.NoResize
+            };
 
-            window.ContentControl.Content = _container.Resolve<IViewFactory>().GetView(loginViewModel);
             window.Show();
         }
     }

@@ -4,6 +4,10 @@ namespace Andead.Chat.Clients.Wpf.Interfaces
 {
     public interface IViewFactory
     {
-        object GetView(ViewModel viewModel);
+        View GetView(ViewModel viewModel);
+
+        View GetView<TViewModel>();
+
+        View GetView(string viewModelTypeName);
     }
 }

@@ -19,9 +19,18 @@ namespace Andead.Chat.Clients.Wpf.Interfaces
             _resolver = resolver;
         }
 
-        public object GetView(ViewModel viewModel)
+        public View GetView(ViewModel viewModel)
         {
-            string viewModelTypeName = viewModel.GetType().FullName;
+            return GetView(viewModel.GetType().FullName);
+        }
+
+        public View GetView<TViewModel>()
+        {
+            return GetView(typeof(TViewModel).FullName);
+        }
+
+        public View GetView(string viewModelTypeName)
+        {
             string viewTypeName = viewModelTypeName
                 .Replace(ViewModelNamespace, ViewNamespace)
                 .Replace("ViewModel", "View");

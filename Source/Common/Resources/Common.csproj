@@ -41,6 +41,8 @@
     <Compile Include="Policy\Limits.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\Strings\Errors.cs" />
+    <Compile Include="Utilities\Events\OneTimeEventHandler.cs" />
+    <Compile Include="Utilities\Validator.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

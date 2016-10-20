@@ -11,26 +11,13 @@ namespace Andead.Chat.Clients.Wpf
         public ClientWindow()
         {
             InitializeComponent();
+
+            Closing += OnClosing;
         }
 
-        public static ClientWindow Create(string title, ViewModel viewModel, int minWidth = 300, int minHeight = 80)
+        private static void OnClosing(object sender, CancelEventArgs cancelEventArgs)
         {
-            var window = new ClientWindow
-            {
-                Title = title,
-                DataContext = viewModel,
-                MinWidth = minWidth,
-                MinHeight = minHeight
-            };
-
-            window.Closing += WindowOnClosing;
-
-            return window;
-        }
-
-        private static void WindowOnClosing(object sender, CancelEventArgs cancelEventArgs)
-        {
-            (((ClientWindow)sender).DataContext as ViewModel)?.Unload();
+            (((ClientWindow) sender).DataContext as ViewModel)?.Unload();
         }
     }
 }

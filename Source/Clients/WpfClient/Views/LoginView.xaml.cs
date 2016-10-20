@@ -3,6 +3,7 @@ using System.Windows;
 using Andead.Chat.Client;
 using Andead.Chat.Clients.Wpf.Interfaces;
 using Andead.Chat.Clients.Wpf.Properties;
+using Andead.Chat.Common.Utilities;
 
 namespace Andead.Chat.Clients.Wpf
 {
@@ -64,14 +65,23 @@ namespace Andead.Chat.Clients.Wpf
         {
             if (args.ChatViewModel != null)
             {
-                ClientWindow chatWindow = ClientWindow.Create("Chat", args.ChatViewModel, 600, 400);
-                chatWindow.ShowMaxRestoreButton = true;
-                chatWindow.ContentControl.Content = _viewFactory.GetView(args.ChatViewModel);
-                chatWindow.Title = args.ChatViewModel.Title;
-                chatWindow.Show();
+                var chatWindow = new ClientWindow
+                {
+                    DataContext = args.ChatViewModel,
+                    ContentControl = { Content = _viewFactory.GetView(args.ChatViewModel) },
+                    MinWidth = 300,
+                    MinHeight = 150,
+                    Width = 600,
+                    Height = 400,
+                    ResizeMode = ResizeMode.CanResize,
+                    ShowMaxRestoreButton = true,
+                    Title = args.ChatViewModel.Title
+                };
+
+                chatWindow.Closed += new OneTimeEventHandler(Application.Current.MainWindow.Show);
 
                 Application.Current.MainWindow.Hide();
-                chatWindow.Closed += (s, e) => Application.Current.MainWindow.Show();
+                chatWindow.Show();
             }
         }
     }

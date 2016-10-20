@@ -10,7 +10,7 @@
     WindowStartupLocation="CenterScreen"
     ShowMaxRestoreButton="False"
     ResizeMode="CanMinimize"
-    SizeToContent="WidthAndHeight">
+    d:DesignWidth="300" d:DesignHeight="80">
     
     <Grid Margin="5">
         <ContentControl x:Name="ContentControl" />

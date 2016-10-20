@@ -20,6 +20,12 @@
         <Setter Property="VerticalAlignment" Value="Center" />
     </Style>
 
+    <Style TargetType="TextBox" x:Key="ChatTextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+        <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
+        <Setter Property="IsReadOnly" Value="True" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+
     <Style TargetType="Button" BasedOn="{StaticResource MetroAccentButton}">
         <Setter Property="Margin" Value="2.5" />
         <Setter Property="FontSize" Value="18" />
