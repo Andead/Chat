@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
+using System.Text;
 using Andead.Chat.Common.Logging;
 using Andead.Chat.Common.Policy;
 using Andead.Chat.Common.Resources.Strings;
@@ -170,7 +171,7 @@ namespace Andead.Chat.Server
 
         private void BroadcastUpdateOnlineCount()
         {
-            PerformAction(c => c.UpdateOnlineCount(_clients.Count), true);
+            PerformAction(c => c.UpdateOnlineCount(_clients.Count));
 
             _logger.Trace($"Updated online count for all clients: {_clients.Count}.");
         }
@@ -182,9 +183,9 @@ namespace Andead.Chat.Server
             _logger.Trace(message);
         }
 
-        private void PerformAction(Action<IChatClient> action, bool repeatAfterRemoval = false)
+        private void PerformAction(Action<IChatClient> action)
         {
-            var toRemove = new List<IChatClient>();
+            var toRemove = new Dictionary<IChatClient, string>();
 
             lock (_clients)
             {
@@ -199,21 +200,20 @@ namespace Andead.Chat.Server
                         _logger.Warn($"The channel {pair.Value} is absent and will be removed. ",
                             WarnCategory.UnexpectedBehavior);
 
-                        toRemove.Add(pair.Key);
+                        toRemove.Add(pair.Key, pair.Value);
                     }
                 }
 
                 if (toRemove.Any())
                 {
-                    foreach (IChatClient client in toRemove)
+                    foreach (KeyValuePair<IChatClient, string> pair in toRemove)
                     {
-                        _clients.Remove(client);
+                        _clients.Remove(pair);
                     }
 
-                    if (repeatAfterRemoval)
-                    {
-                        PerformAction(action);
-                    }
+                    BroadcastMessage(
+                        $"{string.Join(", ", toRemove.Values)} {(toRemove.Count > 1 ? "were" : "was")} lost.");
+                    BroadcastUpdateOnlineCount();
                 }
             }
         }
