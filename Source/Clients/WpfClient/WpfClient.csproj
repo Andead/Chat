@@ -73,6 +73,8 @@
     <Compile Include="Interfaces\IViewFactory.cs" />
     <Compile Include="Interfaces\ViewFactory.cs" />
     <Compile Include="ServiceClientFactory.cs" />
+    <Compile Include="Utilities\FlashWindow.cs" />
+    <Compile Include="Utilities\NativeMethods.cs" />
     <Compile Include="Views\ChatView.xaml.cs">
       <DependentUpon>ChatView.xaml</DependentUpon>
     </Compile>

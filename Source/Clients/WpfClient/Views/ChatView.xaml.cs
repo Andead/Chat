@@ -2,9 +2,12 @@
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Andead.Chat.Client;
+using Andead.Chat.Clients.Wpf.Utilities;
 
 namespace Andead.Chat.Clients.Wpf
 {
@@ -48,7 +51,27 @@ namespace Andead.Chat.Clients.Wpf
                 {
                     MessagesTextBox.AppendText(message + Environment.NewLine);
                 }
+
+                if (Window.GetWindow(this)?.WindowState == WindowState.Minimized)
+                {
+                    Task.Run(new Action(FlashWhileMinimized));
+                    Window.GetWindow(this).StartFlashing();
+                }
             }
+        }
+
+        private void FlashWhileMinimized()
+        {
+            Dispatcher.Invoke(() => Window.GetWindow(this).StartFlashing());
+
+            var minimized = true;
+            while (minimized)
+            {
+                Thread.Sleep(100);
+                Dispatcher.Invoke(() => minimized = Window.GetWindow(this)?.WindowState == WindowState.Minimized);
+            }
+
+            Dispatcher.Invoke(() => Window.GetWindow(this).StopFlashing());
         }
 
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs args)

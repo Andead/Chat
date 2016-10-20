@@ -51,11 +51,11 @@ namespace Andead.Chat.Client.WinForms
         {
             Invoke(new Action(() => FlashWindow.Start(this)));
 
-            var windowState = FormWindowState.Minimized;
-            while (windowState == FormWindowState.Minimized)
+            var minimized = true;
+            while (minimized)
             {
                 Thread.Sleep(100);
-                Invoke(new Action(() => windowState = WindowState));
+                Invoke(new Action(() => minimized = WindowState == FormWindowState.Minimized));
             }
 
             Invoke(new Action(() => FlashWindow.Stop(this)));
