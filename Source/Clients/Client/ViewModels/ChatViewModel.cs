@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Andead.Chat.Common.Utilities;
 using GalaSoft.MvvmLight.CommandWpf;
 
 namespace Andead.Chat.Client
@@ -20,10 +21,7 @@ namespace Andead.Chat.Client
 
         public ChatViewModel(IServiceClient client)
         {
-            if (client == null)
-            {
-                throw new ArgumentNullException(nameof(client));
-            }
+            client.IsNotNull(nameof(client));
 
             _client = client;
             _client.OnlineCountUpdated += ClientOnOnlineCountUpdated;
@@ -179,10 +177,13 @@ namespace Andead.Chat.Client
 
                 OnSendMessage(new SendMessageEventArgs(result));
 
-                if (result.Success)
+                if (!result.Success)
                 {
-                    Message = null;
+                    OnError(result.Message);
+                    return;
                 }
+
+                Message = null;
             }
             catch (Exception e)
             {

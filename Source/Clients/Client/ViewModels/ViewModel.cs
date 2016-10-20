@@ -14,6 +14,11 @@ namespace Andead.Chat.Client
             Error?.Invoke(this, e);
         }
 
+        protected virtual void OnError(string message)
+        {
+            Error?.Invoke(this, new ErrorEventArgs(new OperationFailedException(message)));
+        }
+
         public virtual void Load()
         {
         }

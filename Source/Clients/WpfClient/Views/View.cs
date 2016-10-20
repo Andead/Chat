@@ -68,7 +68,12 @@ namespace Andead.Chat.Clients.Wpf
 
         private static void ViewModelOnError(object sender, ErrorEventArgs args)
         {
-            MessageBox.Show(args.GetException().Message, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            ShowError(args.GetException().Message);
+        }
+
+        protected static void ShowError(string message)
+        {
+            MessageBox.Show(message, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
     }
 }

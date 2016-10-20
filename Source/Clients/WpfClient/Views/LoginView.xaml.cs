@@ -55,6 +55,12 @@ namespace Andead.Chat.Clients.Wpf
 
         private void LoginViewModelOnSignIn(object sender, SignInEventArgs args)
         {
+            if (!args.Result.Success)
+            {
+                ShowError(args.Result.Message);
+                return;
+            }
+
             if (args.ChatViewModel != null)
             {
                 var chatWindow = new ClientWindow

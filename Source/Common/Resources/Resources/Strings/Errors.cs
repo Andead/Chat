@@ -25,5 +25,7 @@ namespace Andead.Chat.Common.Resources.Strings
 
         public static readonly string MessageLengthMustBeWithinLimits =
             $"Message length must be not greater than {Limits.MessageMaxLength}";
+
+        public static readonly string ConnectionHasBeenLostTryToRelogin = "Connection has been lost. Try to relogin.";
     }
 }

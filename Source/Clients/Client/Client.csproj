@@ -36,6 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Entities\ConnectionConfiguration.cs" />
+    <Compile Include="Entities\OperationFailedException.cs" />
     <Compile Include="EventArgs\MessageReceivedEventArgs.cs" />
     <Compile Include="Entities\SendMessageResult.cs" />
     <Compile Include="Entities\SignInResult.cs" />

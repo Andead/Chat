@@ -52,7 +52,12 @@ namespace Andead.Chat.Client.WinForms
 
         protected virtual void OnException(Exception exception)
         {
-            MessageBox.Show(exception.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            ShowError(exception.Message);
+        }
+
+        protected static void ShowError(string message)
+        {
+            MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
     }
 }

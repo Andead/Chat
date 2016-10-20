@@ -2,6 +2,7 @@
 using System.ServiceModel;
 using System.Threading.Tasks;
 using Andead.Chat.Client.Wcf.ChatService;
+using Andead.Chat.Common.Resources.Strings;
 
 namespace Andead.Chat.Client.Wcf
 {
@@ -144,7 +145,7 @@ namespace Andead.Chat.Client.Wcf
             }
             catch (CommunicationObjectFaultedException)
             {
-                return new SendMessageResult {Success = false};
+                return new SendMessageResult {Success = false, Message = Errors.ConnectionHasBeenLostTryToRelogin};
             }
 
             return new SendMessageResult { Message = response.Message, Success = response.Success };

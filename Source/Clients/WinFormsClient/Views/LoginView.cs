@@ -29,6 +29,7 @@ namespace Andead.Chat.Client.WinForms
         {
             if (!args.Result.Success)
             {
+                ShowError(args.Result.Message);
                 return;
             }
 

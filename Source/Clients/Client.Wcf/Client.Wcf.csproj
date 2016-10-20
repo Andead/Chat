@@ -72,6 +72,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Common\Resources\Common.csproj">
+      <Project>{F9E6727D-BB3B-484B-B4DC-4067F4EFDF80}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Client\Client.csproj">
       <Project>{0BA78689-340C-4A32-9DE2-D61B52460B55}</Project>
       <Name>Client</Name>
