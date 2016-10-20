@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using Andead.Chat.Client;
+using Andead.Chat.Clients.Wpf.Views;
 
 namespace Andead.Chat.Clients.Wpf
 {
@@ -73,7 +74,22 @@ namespace Andead.Chat.Clients.Wpf
 
         protected static void ShowError(string message)
         {
-            MessageBox.Show(message, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            try
+            {
+                var window = new ClientWindow
+                {
+                    Title = "Error",
+                    ContentControl = {Content = new ErrorView {DataContext = message}},
+                    SizeToContent = SizeToContent.WidthAndHeight,
+                    ResizeMode = ResizeMode.NoResize
+                };
+
+                window.ShowDialog();
+            }
+            catch
+            {
+                MessageBox.Show(message, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
     }
 }
