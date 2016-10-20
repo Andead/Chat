@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using Andead.Chat.Client;
 using Andead.Chat.Clients.Wpf.Interfaces;
 using Andead.Chat.Clients.Wpf.Properties;
@@ -22,14 +21,7 @@ namespace Andead.Chat.Clients.Wpf
         public LoginView(LoginViewModel loginViewModel, IViewFactory viewFactory)
             : base(loginViewModel)
         {
-            if (loginViewModel == null)
-            {
-                throw new ArgumentNullException(nameof(loginViewModel));
-            }
-            if (viewFactory == null)
-            {
-                throw new ArgumentNullException(nameof(viewFactory));
-            }
+            viewFactory.IsNotNull(nameof(viewFactory));
 
             _viewFactory = viewFactory;
 
@@ -78,7 +70,11 @@ namespace Andead.Chat.Clients.Wpf
                     Title = args.ChatViewModel.Title
                 };
 
-                chatWindow.Closed += new OneTimeEventHandler(Application.Current.MainWindow.Show);
+                chatWindow.Closed += new OneTimeEventHandler(() =>
+                {
+                    Application.Current.MainWindow.Show();
+                    ((LoginViewModel)DataContext).Reload();
+                });
 
                 Application.Current.MainWindow.Hide();
                 chatWindow.Show();

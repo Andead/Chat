@@ -2,9 +2,14 @@
 {
     public class SignInResult
     {
-        public SignInResult(bool success, string message, int onlineCount)
+        public SignInResult(bool success)
         {
             Success = success;
+        }
+
+        public SignInResult(bool success, string message, int onlineCount)
+            : this(success)
+        {
             Message = message;
             OnlineCount = onlineCount;
         }

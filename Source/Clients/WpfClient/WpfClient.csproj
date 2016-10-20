@@ -72,6 +72,7 @@
     <Compile Include="Container.cs" />
     <Compile Include="Interfaces\IViewFactory.cs" />
     <Compile Include="Interfaces\ViewFactory.cs" />
+    <Compile Include="ServiceClientFactory.cs" />
     <Compile Include="Views\ChatView.xaml.cs">
       <DependentUpon>ChatView.xaml</DependentUpon>
     </Compile>

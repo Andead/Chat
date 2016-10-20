@@ -19,20 +19,19 @@ namespace Andead.Chat.Clients.Wpf
             builder.RegisterInstance(LogManager.GetLogger("Default"))
                 .As<ILogger>();
 
-            var configuration = new ConnectionConfiguration
+            builder.RegisterInstance(new ConnectionConfiguration
             {
                 ServerName = Settings.Default.ServerName,
                 Protocol = Settings.Default.Protocol,
                 Port = Settings.Default.Port,
                 TimeOut = Settings.Default.Timeout
-            };
+            });
 
             builder.RegisterInstance(new ViewFactory(type => _container.Resolve(type) as View))
                 .As<IViewFactory>();
 
-            builder.RegisterType<ServiceClient>()
-                .As<IAsyncServiceClient>()
-                .OnActivated(args => args.Instance.Connect(configuration));
+            builder.RegisterInstance(new ServiceClientFactory(() => new ServiceClient()))
+                .As<IServiceClientFactory>();
 
             builder.RegisterType<LoginViewModel>();
 

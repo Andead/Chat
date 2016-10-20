@@ -22,6 +22,12 @@ namespace Andead.Chat.Client
         {
         }
 
+        public void Reload()
+        {
+            Unload();
+            Load();
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged(string propertyName = null)

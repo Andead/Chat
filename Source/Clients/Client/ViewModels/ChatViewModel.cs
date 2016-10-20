@@ -97,6 +97,19 @@ namespace Andead.Chat.Client
 
         public SignInResult SignInResult { get; set; }
 
+        public override void Load()
+        {
+            base.Load();
+
+            ServerName = _client.ServerName;
+
+            if (SignInResult.Success)
+            {
+                OnlineCount = SignInResult.OnlineCount;
+                Messages.Add(SignInResult.Message);
+            }
+        }
+
         public override async void Unload()
         {
             _client.OnlineCountUpdated -= ClientOnOnlineCountUpdated;
@@ -111,6 +124,8 @@ namespace Andead.Chat.Client
             {
                 _client.SignOut();
             }
+
+            _client.Disconnect();
         }
 
         private void CreateCommands()
@@ -126,19 +141,6 @@ namespace Andead.Chat.Client
         private void ClientOnOnlineCountUpdated(object sender, OnlineCountUpdatedEventArgs args)
         {
             OnlineCount = args.Value;
-        }
-
-        public override void Load()
-        {
-            base.Load();
-
-            ServerName = _client.ServerName;
-
-            if (SignInResult.Success)
-            {
-                OnlineCount = SignInResult.OnlineCount;
-                Messages.Add(SignInResult.Message);
-            }
         }
 
         public async void UpdateOnlineNames()

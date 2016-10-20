@@ -53,7 +53,14 @@ namespace Andead.Chat.Client.Wcf
 
         public void Disconnect()
         {
-            ((ICommunicationObject) Service).Close(_timeout);
+            try
+            {
+
+                ((ICommunicationObject) Service).Close(_timeout);
+            }
+            catch (CommunicationObjectFaultedException)
+            {
+            }
         }
 
         public SignInResult SignIn(string name)
@@ -77,10 +84,19 @@ namespace Andead.Chat.Client.Wcf
         {
             var request = new SignInRequest {Name = name};
 
-            SignInResponse response = await Service.SignInAsync(request);
+            SignInResponse response;
+
+            try
+            {
+                response = await Service.SignInAsync(request);
+            }
+            catch(CommunicationObjectFaultedException)
+            {
+                SignedIn = false;
+                return new SignInResult(false);
+            }
 
             SignedIn = response.Success;
-
             return new SignInResult(response.Success, response.Message, response.OnlineCount);
         }
 
@@ -93,9 +109,17 @@ namespace Andead.Chat.Client.Wcf
 
         public async Task SignOutAsync()
         {
-            await Service.SignOutAsync();
-
-            SignedIn = false;
+            try
+            {
+                await Service.SignOutAsync();
+            }
+            catch (CommunicationObjectFaultedException)
+            {
+            }
+            finally
+            {
+                SignedIn = false;
+            }
         }
 
         public SendMessageResult Send(string message)
@@ -113,11 +137,18 @@ namespace Andead.Chat.Client.Wcf
         {
             var request = new SendMessageRequest {Message = message};
 
-            SendMessageResponse response = await Service.SendMessageAsync(request);
+            SendMessageResponse response;
 
-            var result = new SendMessageResult {Message = response.Message, Success = response.Success};
+            try
+            {
+                response = await Service.SendMessageAsync(request);
+            }
+            catch (CommunicationObjectFaultedException)
+            {
+                return new SendMessageResult {Success = false};
+            }
 
-            return result;
+            return new SendMessageResult { Message = response.Message, Success = response.Success };
         }
 
         public string[] GetNamesOnline()
@@ -127,7 +158,14 @@ namespace Andead.Chat.Client.Wcf
 
         public async Task<string[]> GetNamesOnlineAsync()
         {
-            return await Service.GetNamesOnlineAsync();
+            try
+            {
+                return await Service.GetNamesOnlineAsync();
+            }
+            catch (CommunicationObjectFaultedException)
+            {
+                return null;
+            }
         }
 
         void IChatServiceCallback.ReceiveMessage(string message)
