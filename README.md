@@ -1,8 +1,6 @@
 # Chat
 A simple client-server chat implementation based on WCF.
 
-![WPF client application](https://github.com/AndeadFMP/Chat/blob/gh-pages/docs/screenshot.png)
-
 Server part - WCF service, hosted in a console application (or IIS). Currently no security used. Listens to a 808 port in duplex mode using net.tcp protocol.  
 Client part - a WinForms and a WPF application.  
 
