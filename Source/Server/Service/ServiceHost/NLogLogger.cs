@@ -31,5 +31,10 @@ namespace ServiceHost
         {
             _logger.Trace(message);
         }
+
+        public void Fatal(string message)
+        {
+            _logger.Fatal(message);
+        }
     }
 }

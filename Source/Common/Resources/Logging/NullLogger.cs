@@ -13,5 +13,9 @@
         public void Trace(string message)
         {
         }
+
+        public void Fatal(string message)
+        {
+        }
     }
 }

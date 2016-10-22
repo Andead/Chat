@@ -7,5 +7,7 @@
         void Warn(string message, WarnCategory category);
 
         void Trace(string message);
+
+        void Fatal(string message);
     }
 }

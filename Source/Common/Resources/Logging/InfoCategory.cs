@@ -4,6 +4,8 @@ namespace Andead.Chat.Common.Logging
     {
         Broadcast,
 
-        Validation
+        Validation,
+
+        Workflow
     }
 }

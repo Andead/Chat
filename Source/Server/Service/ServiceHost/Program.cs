@@ -20,10 +20,9 @@ namespace ServiceHost
 
             try
             {
-                _host =
-                    new System.ServiceModel.ServiceHost(
-                        new Service(new ChatService(new CurrentOperationContextChatClientProvider(),
-                            new NLogLogger(LogManager.GetCurrentClassLogger(typeof(ChatService))))));
+                var logger = new NLogLogger(LogManager.GetCurrentClassLogger(typeof(ChatService)));
+                _host = new System.ServiceModel.ServiceHost(
+                    new Service(new ChatService(new WcfChatClientsProvider(logger), logger)));
 
                 // Start
                 _host.Open();

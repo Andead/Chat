@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ServiceModel;
 using Andead.Chat.Common.Logging;
 
@@ -16,7 +16,8 @@ namespace Andead.Chat.Server.Wcf
 
         public Service()
         {
-            _service = new ChatService(new CurrentOperationContextChatClientProvider(), new NullLogger());
+            var logger = new NullLogger();
+            _service = new ChatService(new WcfChatClientsProvider(logger), logger);
         }
 
         public SignInResponse SignIn(SignInRequest request)
@@ -39,7 +40,7 @@ namespace Andead.Chat.Server.Wcf
             return _service.GetOnlineCount();
         }
 
-        public List<string> GetNamesOnline()
+        public ReadOnlyCollection<string> GetNamesOnline()
         {
             return _service.GetNamesOnline();
         }

@@ -38,9 +38,10 @@
   <ItemGroup>
     <Compile Include="Entities\Requests\SendMessageRequest.cs" />
     <Compile Include="Entities\Responses\SendMessageResponse.cs" />
+    <Compile Include="Events\ClientsRemovedEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Interfaces\IChatClient.cs" />
-    <Compile Include="Interfaces\IChatClientProvider.cs" />
+    <Compile Include="Interfaces\IChatClientsProvider.cs" />
     <Compile Include="Interfaces\IChatService.cs" />
     <Compile Include="Entities\Requests\SignInRequest.cs" />
     <Compile Include="Entities\Responses\SignInResponse.cs" />

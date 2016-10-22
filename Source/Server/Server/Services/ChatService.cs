@@ -1,50 +1,42 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
-using System.ServiceModel;
-using System.Text;
 using Andead.Chat.Common.Logging;
 using Andead.Chat.Common.Policy;
 using Andead.Chat.Common.Resources.Strings;
+using Andead.Chat.Common.Utilities;
 
 namespace Andead.Chat.Server
 {
     public class ChatService : IChatService
     {
-        private readonly IChatClientProvider _chatClientProvider;
-
-        private readonly IDictionary<IChatClient, string> _clients
-            = new Dictionary<IChatClient, string>();
-
+        private readonly object _access = new object();
+        private readonly IChatClientsProvider _chatClientsProvider;
         private readonly ILogger _logger;
 
-        public ChatService(IChatClientProvider chatClientProvider, ILogger logger)
+        public ChatService(IChatClientsProvider chatClientsProvider, ILogger logger)
         {
-            if (chatClientProvider == null)
-            {
-                throw new ArgumentNullException(nameof(chatClientProvider));
-            }
-            if (logger == null)
-            {
-                throw new ArgumentNullException(nameof(logger));
-            }
+            chatClientsProvider.IsNotNull(nameof(chatClientsProvider));
+            logger.IsNotNull(nameof(logger));
 
-            _chatClientProvider = chatClientProvider;
+            _chatClientsProvider = chatClientsProvider;
             _logger = logger;
+
+            chatClientsProvider.ClientsRemoved += ChatClientProviderOnClientsRemoved;
         }
 
         public SignInResponse SignIn(SignInRequest request)
         {
-            lock (_clients)
+            lock (_access)
             {
-                IChatClient currentClient = _chatClientProvider.GetCurrent();
+                IChatClient currentClient = _chatClientsProvider.GetCurrentClient();
                 if (currentClient == null)
                 {
                     _logger.Warn("Sign in failure: wrong callback channel.", WarnCategory.InvalidRequest);
                     return SignInResponse.Failed(Errors.CallbackChannelFailure);
                 }
 
-                if (_clients.ContainsKey(currentClient))
+                if (_chatClientsProvider.IsClientActive(currentClient) &&
+                    _chatClientsProvider.IsClientSignedIn(currentClient))
                 {
                     _logger.Warn("Sign in failure: already signed in.", WarnCategory.InvalidRequest);
                     return SignInResponse.Failed(Errors.AlreadySignedIn);
@@ -63,19 +55,19 @@ namespace Andead.Chat.Server
                     return SignInResponse.Failed(Errors.NameLengthExceededLimits);
                 }
 
-                if (_clients.Values.Contains(name))
+                if (_chatClientsProvider.IsNameActive(name))
                 {
                     _logger.Info("Sign in failure: name already taken.", InfoCategory.Validation);
                     return SignInResponse.Failed(Errors.NameAlreadyTaken);
                 }
 
-                _clients.Add(currentClient, name);
+                _chatClientsProvider.AddCurrent(name);
 
                 BroadcastUpdateOnlineCount();
                 BroadcastMessage($"{name} has joined the chat.");
 
                 SignInResponse response = SignInResponse.Successful();
-                response.OnlineCount = _clients.Count;
+                response.OnlineCount = _chatClientsProvider.GetClientsCount();
 
                 return response;
             }
@@ -83,19 +75,19 @@ namespace Andead.Chat.Server
 
         public void SignOut()
         {
-            lock (_clients)
+            lock (_access)
             {
-                IChatClient currentClient = _chatClientProvider.GetCurrent();
-                if (!_clients.ContainsKey(currentClient))
+                IChatClient client = _chatClientsProvider.GetCurrentClient();
+                if (!_chatClientsProvider.IsClientActive(client))
                 {
                     _logger.Warn("Sign out denied for a non-active client.", WarnCategory.AccessDenied);
                     return;
                 }
 
-                string name = _clients[currentClient];
-                currentClient.ReceiveMessage($"Goodbye, {name}!");
+                string name = _chatClientsProvider.GetClientName(client);
+                client.ReceiveMessage($"Goodbye, {name}!");
 
-                _clients.Remove(currentClient);
+                _chatClientsProvider.RemoveClient(client);
 
                 BroadcastUpdateOnlineCount();
                 BroadcastMessage($"{name} has left the chat.");
@@ -104,7 +96,7 @@ namespace Andead.Chat.Server
 
         public SendMessageResponse SendMessage(SendMessageRequest request)
         {
-            lock (_clients)
+            lock (_access)
             {
                 if (request == null)
                 {
@@ -112,8 +104,8 @@ namespace Andead.Chat.Server
                     return SendMessageResponse.Failed(Errors.InvalidRequest);
                 }
 
-                IChatClient currentClient = _chatClientProvider.GetCurrent();
-                if (!_clients.ContainsKey(currentClient))
+                IChatClient client = _chatClientsProvider.GetCurrentClient();
+                if (!_chatClientsProvider.IsClientActive(client))
                 {
                     _logger.Warn("Sending message denied for a non-active client.", WarnCategory.AccessDenied);
                     return SendMessageResponse.Failed(Errors.AccessDenied);
@@ -131,7 +123,7 @@ namespace Andead.Chat.Server
                     return SendMessageResponse.Failed(Errors.MessageLengthMustBeWithinLimits);
                 }
 
-                string name = _clients[currentClient];
+                string name = _chatClientsProvider.GetClientName(client);
 
                 BroadcastMessage($"{name}: {request.Message}");
 
@@ -141,80 +133,63 @@ namespace Andead.Chat.Server
 
         public int? GetOnlineCount()
         {
-            lock (_clients)
+            lock (_access)
             {
-                IChatClient currentClient = _chatClientProvider.GetCurrent();
-                if (!_clients.ContainsKey(currentClient))
+                IChatClient currentClient = _chatClientsProvider.GetCurrentClient();
+                if (!_chatClientsProvider.IsClientActive(currentClient) ||
+                    !_chatClientsProvider.IsClientSignedIn(currentClient))
                 {
                     _logger.Warn("Getting online count denied for a non-active client.", WarnCategory.AccessDenied);
                     return null;
                 }
 
-                return _clients.Count;
+                return _chatClientsProvider.GetClientsCount();
             }
         }
 
-        public List<string> GetNamesOnline()
+        public ReadOnlyCollection<string> GetNamesOnline()
         {
-            lock (_clients)
+            lock (_access)
             {
-                IChatClient currentClient = _chatClientProvider.GetCurrent();
-                if (!_clients.ContainsKey(currentClient))
+                IChatClient currentClient = _chatClientsProvider.GetCurrentClient();
+                if (!_chatClientsProvider.IsClientActive(currentClient))
                 {
                     _logger.Warn("Getting names online denied for a non-active client.", WarnCategory.AccessDenied);
                     return null;
                 }
 
-                return _clients.Values.ToList();
+                return _chatClientsProvider.GetClientsNames().ToList().AsReadOnly();
+            }
+        }
+
+        private void ChatClientProviderOnClientsRemoved(object sender, ClientsRemovedEventArgs args)
+        {
+            lock (_access)
+            {
+                BroadcastMessage(
+                    $"{string.Join(", ", args.RemovedClients.Values)} {(args.RemovedClients.Count > 1 ? "were" : "was")} lost.");
+                BroadcastUpdateOnlineCount();
             }
         }
 
         private void BroadcastUpdateOnlineCount()
         {
-            PerformAction(c => c.UpdateOnlineCount(_clients.Count));
+            lock (_access)
+            {
+                int onlineCount = _chatClientsProvider.GetClientsCount();
+                _chatClientsProvider.PerformAction(c => c.UpdateOnlineCount(onlineCount));
 
-            _logger.Trace($"Updated online count for all clients: {_clients.Count}.");
+                _logger.Trace($"Updated online count for all clients: {onlineCount}.");
+            }
         }
 
         private void BroadcastMessage(string message)
         {
-            PerformAction(c => c.ReceiveMessage(message));
-
-            _logger.Trace(message);
-        }
-
-        private void PerformAction(Action<IChatClient> action)
-        {
-            var toRemove = new Dictionary<IChatClient, string>();
-
-            lock (_clients)
+            lock (_access)
             {
-                foreach (KeyValuePair<IChatClient, string> pair in _clients)
-                {
-                    try
-                    {
-                        action(pair.Key);
-                    }
-                    catch (CommunicationObjectAbortedException)
-                    {
-                        _logger.Warn($"The channel {pair.Value} is absent and will be removed. ",
-                            WarnCategory.UnexpectedBehavior);
+                _chatClientsProvider.PerformAction(c => c.ReceiveMessage(message));
 
-                        toRemove.Add(pair.Key, pair.Value);
-                    }
-                }
-
-                if (toRemove.Any())
-                {
-                    foreach (KeyValuePair<IChatClient, string> pair in toRemove)
-                    {
-                        _clients.Remove(pair);
-                    }
-
-                    BroadcastMessage(
-                        $"{string.Join(", ", toRemove.Values)} {(toRemove.Count > 1 ? "were" : "was")} lost.");
-                    BroadcastUpdateOnlineCount();
-                }
+                _logger.Trace(message);
             }
         }
     }

@@ -57,8 +57,8 @@ namespace ChatServiceTests
 
         private static IChatService CreateService()
         {
-            var clientProvider = new Mock<IChatClientProvider>();
-            clientProvider.Setup(p => p.GetCurrent()).Returns(Mock.Of<IChatClient>());
+            var clientProvider = new Mock<IChatClientsProvider>();
+            clientProvider.Setup(p => p.GetCurrentClient()).Returns(Mock.Of<IChatClient>());
 
             IChatService service = new ChatService(clientProvider.Object, Mock.Of<ILogger>());
             return service;
