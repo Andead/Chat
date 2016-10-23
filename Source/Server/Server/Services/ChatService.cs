@@ -125,7 +125,7 @@ namespace Andead.Chat.Server
 
                 string name = _chatClientsProvider.GetClientName(client);
 
-                BroadcastMessage($"{name}: {request.Message}");
+                BroadcastMessage($"{name}: {request.Message.Trim()}");
 
                 return SendMessageResponse.Successful();
             }
