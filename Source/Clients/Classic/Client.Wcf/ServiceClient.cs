@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.ServiceModel;
 using System.Threading.Tasks;
 using Andead.Chat.Client.Wcf.ChatService;
@@ -43,13 +44,17 @@ namespace Andead.Chat.Client.Wcf
             // Remember last config
             _lastConfiguration = configuration;
 
+            // Search for the end of host name
+            string hostname = configuration.ServerName.Split('/').First();
+            string path = configuration.ServerName.Substring(hostname.Length);
+
             switch (configuration.Protocol)
             {
                 case "net.tcp":
                     Service = DuplexChannelFactory<IChatService>.CreateChannel(
                         new InstanceContext(this),
                         new NetTcpBinding(SecurityMode.None),
-                        new EndpointAddress($"net.tcp://{configuration.ServerName}:{configuration.Port}/Service.svc"));
+                        new EndpointAddress($"net.tcp://{hostname}:{configuration.Port}{path}/Service.svc"));
                     break;
                 case "http":
                     Service = DuplexChannelFactory<IChatService>.CreateChannel(

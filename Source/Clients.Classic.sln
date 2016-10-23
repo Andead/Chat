@@ -3,24 +3,42 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinFormsClient", "Classic\WinFormsClient\WinFormsClient.csproj", "{A5FB6392-A395-4075-BD3B-27C44D9489BD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinFormsClient", "Clients\Classic\WinFormsClient\WinFormsClient.csproj", "{A5FB6392-A395-4075-BD3B-27C44D9489BD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F9E6727D-BB3B-484B-B4DC-4067F4EFDF80} = {F9E6727D-BB3B-484B-B4DC-4067F4EFDF80}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client.Wcf.Tests", "Classic\Client.Wcf.Tests\Client.Wcf.Tests.csproj", "{CE1DAA25-7388-4FB3-B119-BF1DCB6ACD68}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client.Wcf.Tests", "Clients\Classic\Client.Wcf.Tests\Client.Wcf.Tests.csproj", "{CE1DAA25-7388-4FB3-B119-BF1DCB6ACD68}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F9E6727D-BB3B-484B-B4DC-4067F4EFDF80} = {F9E6727D-BB3B-484B-B4DC-4067F4EFDF80}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Classic\Client\Client.csproj", "{0BA78689-340C-4A32-9DE2-D61B52460B55}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Clients\Classic\Client\Client.csproj", "{0BA78689-340C-4A32-9DE2-D61B52460B55}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F9E6727D-BB3B-484B-B4DC-4067F4EFDF80} = {F9E6727D-BB3B-484B-B4DC-4067F4EFDF80}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client.Wcf", "Classic\Client.Wcf\Client.Wcf.csproj", "{D61E670C-6C48-4133-A144-05C161146742}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client.Wcf", "Clients\Classic\Client.Wcf\Client.Wcf.csproj", "{D61E670C-6C48-4133-A144-05C161146742}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F9E6727D-BB3B-484B-B4DC-4067F4EFDF80} = {F9E6727D-BB3B-484B-B4DC-4067F4EFDF80}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfClient", "Classic\WpfClient\WpfClient.csproj", "{DFD12BD2-BB2E-4B83-8798-48A703A84D9E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfClient", "Clients\Classic\WpfClient\WpfClient.csproj", "{DFD12BD2-BB2E-4B83-8798-48A703A84D9E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F9E6727D-BB3B-484B-B4DC-4067F4EFDF80} = {F9E6727D-BB3B-484B-B4DC-4067F4EFDF80}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Tests", "..\Common\Common.Tests\Common.Tests.csproj", "{300F37C9-2916-4A26-B24E-DF94FD3019D8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Tests", "Common\Common.Tests\Common.Tests.csproj", "{300F37C9-2916-4A26-B24E-DF94FD3019D8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F9E6727D-BB3B-484B-B4DC-4067F4EFDF80} = {F9E6727D-BB3B-484B-B4DC-4067F4EFDF80}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configuration", "Configuration", "{C4A26A4D-CA15-4C6C-BEAD-A592B750942B}"
 	ProjectSection(SolutionItems) = preProject
-		..\Common\Configuration\NLog.config = ..\Common\Configuration\NLog.config
+		Common\Configuration\NLog.config = Common\Configuration\NLog.config
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "..\Common\Common\Common.csproj", "{F9E6727D-BB3B-484B-B4DC-4067F4EFDF80}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common\Common.csproj", "{F9E6727D-BB3B-484B-B4DC-4067F4EFDF80}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

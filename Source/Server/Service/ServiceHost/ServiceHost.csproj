@@ -52,10 +52,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\..\Common\Configuration\NLog.config">
+      <Link>NLog.config</Link>
+    </None>
     <None Include="App.config" />
-    <Content Include="NLog.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <None Include="app.manifest" />
     <None Include="packages.config" />
   </ItemGroup>

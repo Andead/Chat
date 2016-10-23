@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client.Uwp", "UWP\Client.Uwp\Client.Uwp.csproj", "{9AB493BA-6082-4800-AB62-3BD6D8BB50FA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client.Uwp", "Clients\UWP\Client.Uwp\Client.Uwp.csproj", "{9AB493BA-6082-4800-AB62-3BD6D8BB50FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UWPClient", "UWP\UWPClient\UWPClient.csproj", "{2943C41A-8164-47F4-8861-60D275451519}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UWPClient", "Clients\UWP\UWPClient\UWPClient.csproj", "{2943C41A-8164-47F4-8861-60D275451519}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client.Uwp.Wcf", "UWP\Client.Uwp.Wcf\Client.Uwp.Wcf.csproj", "{9D8B6B46-B3AA-4CC9-953B-B4EF4437355D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client.Uwp.Wcf", "Clients\UWP\Client.Uwp.Wcf\Client.Uwp.Wcf.csproj", "{9D8B6B46-B3AA-4CC9-953B-B4EF4437355D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Uwp", "..\Common\Common.Uwp\Common.Uwp.csproj", "{322F1CFF-702F-49CB-953E-75245C540E90}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Uwp", "Common\Common.Uwp\Common.Uwp.csproj", "{322F1CFF-702F-49CB-953E-75245C540E90}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -40,8 +40,6 @@ Global
 		{9AB493BA-6082-4800-AB62-3BD6D8BB50FA}.Release|x86.ActiveCfg = Release|x86
 		{9AB493BA-6082-4800-AB62-3BD6D8BB50FA}.Release|x86.Build.0 = Release|x86
 		{2943C41A-8164-47F4-8861-60D275451519}.Debug|Any CPU.ActiveCfg = Debug|ARM
-		{2943C41A-8164-47F4-8861-60D275451519}.Debug|Any CPU.Build.0 = Debug|ARM
-		{2943C41A-8164-47F4-8861-60D275451519}.Debug|Any CPU.Deploy.0 = Debug|ARM
 		{2943C41A-8164-47F4-8861-60D275451519}.Debug|ARM.ActiveCfg = Debug|ARM
 		{2943C41A-8164-47F4-8861-60D275451519}.Debug|ARM.Build.0 = Debug|ARM
 		{2943C41A-8164-47F4-8861-60D275451519}.Debug|ARM.Deploy.0 = Debug|ARM
