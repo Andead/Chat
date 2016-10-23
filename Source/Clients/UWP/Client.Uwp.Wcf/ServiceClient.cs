@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.ServiceModel;
 using System.Threading.Tasks;
 using Andead.Chat.Client.Uwp.Wcf.ChatService;
@@ -53,13 +54,17 @@ namespace Andead.Chat.Client.Uwp.Wcf
             // Remember last config
             _lastConfiguration = configuration;
 
+            // Search for the end of host name
+            string hostname = configuration.ServerName.Split('/').First();
+            string path = configuration.ServerName.Substring(hostname.Length);
+
             DuplexChannelFactory<IChatService> factory;
             switch (configuration.Protocol)
             {
                 case "net.tcp":
                     factory = new DuplexChannelFactory<IChatService>(new InstanceContext(this),
                         new NetTcpBinding(SecurityMode.None),
-                        new EndpointAddress($"net.tcp://{configuration.ServerName}:{configuration.Port}/Service.svc"));
+                        new EndpointAddress($"net.tcp://{hostname}:{configuration.Port}{path}/Service.svc"));
                     break;
                 default:
                     throw new NotSupportedException("Supported protocol is only net.tcp.");
