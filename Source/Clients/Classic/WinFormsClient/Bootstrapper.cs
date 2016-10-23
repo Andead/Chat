@@ -21,7 +21,8 @@ namespace Andead.Chat.Client.WinForms
                 ServerName = Settings.Default.ServerName,
                 Protocol = Settings.Default.Protocol,
                 Port = Settings.Default.Port,
-                TimeOut = Settings.Default.Timeout
+                TimeOut = Settings.Default.Timeout,
+                UseSsl = Settings.Default.UseSsl
             };
 
             var loginViewModel = new LoginViewModel(new ServiceClientFactory(), configuration);

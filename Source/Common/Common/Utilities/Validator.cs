@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Andead.Chat.Common.Utilities
 {
@@ -9,6 +11,14 @@ namespace Andead.Chat.Common.Utilities
             if (value == null)
             {
                 throw new ArgumentNullException(name);
+            }
+        }
+
+        public static void IsIn(this object value, params object[] range)
+        {
+            if (!range.Contains(value))
+            {
+                throw new ArgumentOutOfRangeException();
             }
         }
     }

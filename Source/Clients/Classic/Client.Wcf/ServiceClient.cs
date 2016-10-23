@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.ServiceModel;
+using System.ServiceModel.Channels;
 using System.Threading.Tasks;
 using Andead.Chat.Client.Wcf.ChatService;
 using Andead.Chat.Common.Policy;
@@ -34,12 +35,12 @@ namespace Andead.Chat.Client.Wcf
 
         public string ServerName { get; private set; }
 
+        public bool UsesSsl { get; private set; }
+
         public void Connect(ConnectionConfiguration configuration)
         {
-            if (configuration == null)
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
+            configuration.IsNotNull(nameof(configuration));
+            configuration.Protocol.IsIn("net.tcp", "http");
 
             // Remember last config
             _lastConfiguration = configuration;
@@ -48,25 +49,39 @@ namespace Andead.Chat.Client.Wcf
             string hostname = configuration.ServerName.Split('/').First();
             string path = configuration.ServerName.Substring(hostname.Length);
 
+            var address =
+                new EndpointAddress($"{configuration.Protocol}://{hostname}:{configuration.Port}{path}/Service.svc");
+
+            Binding binding;
             switch (configuration.Protocol)
             {
                 case "net.tcp":
-                    Service = DuplexChannelFactory<IChatService>.CreateChannel(
-                        new InstanceContext(this),
-                        new NetTcpBinding(SecurityMode.None),
-                        new EndpointAddress($"net.tcp://{hostname}:{configuration.Port}{path}/Service.svc"));
+                    binding = configuration.UseSsl
+                        ? new NetTcpBinding(SecurityMode.Transport)
+                        {
+                            Security =
+                            {
+                                Mode = SecurityMode.Transport,
+                                Transport =
+                                {
+                                    ClientCredentialType = TcpClientCredentialType.None
+                                }
+                            }
+                        }
+                        : new NetTcpBinding(SecurityMode.None);
                     break;
                 case "http":
-                    Service = DuplexChannelFactory<IChatService>.CreateChannel(
-                        new InstanceContext(this),
-                        new WSDualHttpBinding(WSDualHttpSecurityMode.None),
-                        new EndpointAddress($"http://{configuration.ServerName}:{configuration.Port}/Service.svc"));
+                    binding = new WSDualHttpBinding(WSDualHttpSecurityMode.None);
                     break;
                 default:
                     throw new NotSupportedException("Supported protocols are only net.tcp and http.");
             }
 
+            Service = DuplexChannelFactory<IChatService>.CreateChannel(new InstanceContext(this), binding, address);
+
             ServerName = configuration.ServerName;
+            UsesSsl = configuration.UseSsl;
+
             _timeout = TimeSpan.FromMilliseconds(configuration.TimeOut);
         }
 

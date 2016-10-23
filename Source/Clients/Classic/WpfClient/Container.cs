@@ -26,7 +26,8 @@ namespace Andead.Chat.Clients.Wpf
                 ServerName = Settings.Default.ServerName,
                 Protocol = Settings.Default.Protocol,
                 Port = Settings.Default.Port,
-                TimeOut = Settings.Default.Timeout
+                TimeOut = Settings.Default.Timeout,
+                UseSsl = Settings.Default.UseSsl
             });
 
             builder.RegisterInstance(new ViewFactory(type => _container.Resolve(type) as View))

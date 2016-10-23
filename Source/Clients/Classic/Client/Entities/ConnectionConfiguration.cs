@@ -6,6 +6,8 @@
 
         public string ServerName { get; set; } = "localhost";
 
+        public bool UseSsl { get; set; } = false;
+
         public string Protocol { get; set; } = "net.tcp";
 
         public short Port { get; set; } = 808;

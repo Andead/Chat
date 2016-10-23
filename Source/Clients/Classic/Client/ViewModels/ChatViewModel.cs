@@ -100,6 +100,10 @@ namespace Andead.Chat.Client
             base.Load();
 
             ServerName = _client.ServerName;
+            if (_client.UsesSsl)
+            {
+                ServerName += " (secure)";
+            }
 
             if (SignInResult.Success)
             {
