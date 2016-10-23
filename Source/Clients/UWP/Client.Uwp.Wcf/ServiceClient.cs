@@ -2,19 +2,44 @@
 using System.Collections.ObjectModel;
 using System.ServiceModel;
 using System.Threading.Tasks;
-using Andead.Chat.Client.Uwp.Resources;
 using Andead.Chat.Client.Uwp.Wcf.ChatService;
+using Andead.Chat.Common.Policy;
+using Andead.Chat.Common.Utilities;
 
 namespace Andead.Chat.Client.Uwp.Wcf
 {
-    public class ServiceClient : IAsyncServiceClient, IChatServiceCallback, IDisposable
+    public class ServiceClient : IServiceClient, IChatServiceCallback, IDisposable
     {
+        private const string PerformingSignInDescription = "performing sign in";
+        private const string PerformingSignOutDescription = "performing sign-out";
+        private const string SendingAMessageDescription = "sending a message";
+        private const string GettingNamesOnlineDescription = "getting names online";
+        private const string DisconnectingDescription = "disconnecting";
+
+        private ConnectionConfiguration _lastConfiguration;
+        private string _lastName;
+
         private TimeSpan _timeout;
 
         /// <summary>
         ///     This property is marked virtual and public for testing purposes only.
         /// </summary>
         public virtual IChatService Service { get; private set; }
+
+        void IChatServiceCallback.ReceiveMessage(string message)
+        {
+            OnMessageReceived(message);
+        }
+
+        void IChatServiceCallback.UpdateOnlineCount(int value)
+        {
+            OnOnlineCountUpdated(value);
+        }
+
+        public void Dispose()
+        {
+            Disconnect();
+        }
 
         public bool SignedIn { get; private set; }
 
@@ -30,6 +55,9 @@ namespace Andead.Chat.Client.Uwp.Wcf
             {
                 throw new ArgumentNullException(nameof(configuration));
             }
+
+            // Remember last config
+            _lastConfiguration = configuration;
 
             DuplexChannelFactory<IChatService> factory;
             switch (configuration.Protocol)
@@ -51,13 +79,7 @@ namespace Andead.Chat.Client.Uwp.Wcf
 
         public void Disconnect()
         {
-            try
-            {
-                ((ICommunicationObject) Service).Close(_timeout);
-            }
-            catch (CommunicationObjectFaultedException)
-            {
-            }
+            Handle.Errors(() => ((ICommunicationObject) Service).Close(_timeout), DisconnectingDescription);
         }
 
         public SignInResult SignIn(string name)
@@ -71,20 +93,14 @@ namespace Andead.Chat.Client.Uwp.Wcf
         {
             var request = new SignInRequest {Name = name};
 
-            SignInResponse response;
+            // Remember last name
+            _lastName = name;
 
-            try
-            {
-                response = await Service.SignInAsync(request);
-            }
-            catch (CommunicationObjectFaultedException)
-            {
-                SignedIn = false;
-                return new SignInResult(false);
-            }
+            SignInResponse response =
+                await Handle.ErrorsAsync(async () => await Service.SignInAsync(request),
+                    Limits.ReconnectTimes, PerformingSignInDescription, e => Connect(e));
 
-            SignedIn = response.Success;
-            return new SignInResult(response.Success, response.Message, response.OnlineCount);
+            return ProcessSignInResponse(response);
         }
 
         public void SignOut()
@@ -95,17 +111,9 @@ namespace Andead.Chat.Client.Uwp.Wcf
 
         public async Task SignOutAsync()
         {
-            try
-            {
-                await Service.SignOutAsync();
-            }
-            catch (CommunicationObjectFaultedException)
-            {
-            }
-            finally
-            {
-                SignedIn = false;
-            }
+            await Handle.ErrorsAsync(async () => await Service.SignOutAsync(), PerformingSignOutDescription);
+
+            SignedIn = false;
         }
 
         public SendMessageResult Send(string message)
@@ -119,18 +127,10 @@ namespace Andead.Chat.Client.Uwp.Wcf
         {
             var request = new SendMessageRequest {Message = message};
 
-            SendMessageResponse response;
+            SendMessageResponse response = await Handle.ErrorsAsync(async () => await Service.SendMessageAsync(request),
+                SendingAMessageDescription, ConnectAndSignInAsync);
 
-            try
-            {
-                response = await Service.SendMessageAsync(request);
-            }
-            catch (CommunicationObjectFaultedException)
-            {
-                return new SendMessageResult {Success = false, Message = Errors.ConnectionHasBeenLostTryToRelogin};
-            }
-
-            return new SendMessageResult {Message = response.Message, Success = response.Success};
+            return ProcessSendMessageResult(response);
         }
 
         public ObservableCollection<string> GetNamesOnline()
@@ -142,29 +142,57 @@ namespace Andead.Chat.Client.Uwp.Wcf
 
         public async Task<ObservableCollection<string>> GetNamesOnlineAsync()
         {
-            try
+            return await Handle.ErrorsAsync(() => Service.GetNamesOnlineAsync(), GettingNamesOnlineDescription);
+        }
+
+        private SignInResult ProcessSignInResponse(SignInResponse response)
+        {
+            if (response == null)
             {
-                return await Service.GetNamesOnlineAsync();
+                SignedIn = false;
+                return new SignInResult(false, "Failed to sign in. See log for details.");
             }
-            catch (CommunicationObjectFaultedException)
+
+            SignedIn = response.Success;
+            if (response.Success)
             {
-                return null;
+                OnOnlineCountUpdated(response.OnlineCount);
+                OnMessageReceived(response.Message);
+            }
+
+            return new SignInResult(response.Success, response.Message, response.OnlineCount);
+        }
+
+        private void Connect(Exception exception)
+        {
+            if (exception is CommunicationException)
+            {
+                Connect(_lastConfiguration);
             }
         }
 
-        void IChatServiceCallback.ReceiveMessage(string message)
+        private static SendMessageResult ProcessSendMessageResult(SendMessageResponse response)
         {
-            OnMessageReceived(message);
+            if (response == null)
+            {
+                return new SendMessageResult
+                {
+                    Message = "Failed to send message to the server. See log for details.",
+                    Success = false
+                };
+            }
+
+            return new SendMessageResult {Message = response.Message, Success = response.Success};
         }
 
-        void IChatServiceCallback.UpdateOnlineCount(int value)
+        private async Task ConnectAndSignInAsync(Exception e)
         {
-            OnOnlineCountUpdated(value);
-        }
-
-        public void Dispose()
-        {
-            Disconnect();
+            if (e is CommunicationException)
+            {
+                // Open a new channel
+                Connect(_lastConfiguration);
+                await SignInAsync(_lastName);
+            }
         }
 
         private void OnMessageReceived(string message)

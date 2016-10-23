@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Andead.Chat.Client.Uwp.Utilities;
+using Andead.Chat.Common.Utilities;
 using GalaSoft.MvvmLight.Command;
 
 namespace Andead.Chat.Client.Uwp
@@ -12,7 +13,7 @@ namespace Andead.Chat.Client.Uwp
         private readonly IServiceClient _client;
         private string _message;
         private int? _onlineCount;
-        private ObservableCollection<string> _onlineNames;
+        private IReadOnlyCollection<string> _onlineNames;
         private bool _sendEnabled;
         private string _serverName;
         private string _title;
@@ -66,7 +67,7 @@ namespace Andead.Chat.Client.Uwp
             }
         }
 
-        public ObservableCollection<string> OnlineNames
+        public IReadOnlyCollection<string> OnlineNames
         {
             get { return _onlineNames; }
             private set { Set(ref _onlineNames, value); }
@@ -111,16 +112,7 @@ namespace Andead.Chat.Client.Uwp
             _client.OnlineCountUpdated -= ClientOnOnlineCountUpdated;
             _client.MessageReceived -= ClientOnMessageReceived;
 
-            var asyncServiceClient = _client as IAsyncServiceClient;
-            if (asyncServiceClient != null)
-            {
-                await asyncServiceClient.SignOutAsync();
-            }
-            else
-            {
-                _client.SignOut();
-            }
-
+            await _client.SignOutAsync();
             _client.Disconnect();
         }
 
@@ -141,17 +133,7 @@ namespace Andead.Chat.Client.Uwp
 
         public async void UpdateOnlineNames()
         {
-            ObservableCollection<string> names;
-
-            var asyncServiceClient = _client as IAsyncServiceClient;
-            if (asyncServiceClient != null)
-            {
-                names = await asyncServiceClient.GetNamesOnlineAsync();
-            }
-            else
-            {
-                names = _client.GetNamesOnline();
-            }
+            ObservableCollection<string> names = await _client.GetNamesOnlineAsync();
 
             OnlineNames = names;
         }
@@ -160,18 +142,9 @@ namespace Andead.Chat.Client.Uwp
         {
             try
             {
-                SendMessageResult result;
                 SendEnabled = false;
 
-                var asyncServiceClient = _client as IAsyncServiceClient;
-                if (asyncServiceClient != null)
-                {
-                    result = await asyncServiceClient.SendAsync(Message);
-                }
-                else
-                {
-                    result = _client.Send(Message);
-                }
+                SendMessageResult result = await _client.SendAsync(Message);
 
                 OnSendMessage(new SendMessageEventArgs(result));
 
@@ -186,6 +159,9 @@ namespace Andead.Chat.Client.Uwp
             catch (Exception e)
             {
                 OnError(new ErrorEventArgs(e));
+            }
+            finally
+            {
                 SendEnabled = true;
             }
         }

@@ -7,6 +7,11 @@
             Success = success;
         }
 
+        public SignInResult(bool success, string message)
+            : this(success, message, 0)
+        {
+        }
+
         public SignInResult(bool success, string message, int onlineCount)
             : this(success)
         {

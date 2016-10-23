@@ -68,10 +68,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Common\Resources\Common.csproj">
-      <Project>{F9E6727D-BB3B-484B-B4DC-4067F4EFDF80}</Project>
-      <Name>Common</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Client.Wcf\Client.Wcf.csproj">
       <Project>{D61E670C-6C48-4133-A144-05C161146742}</Project>
       <Name>Client.Wcf</Name>

@@ -119,18 +119,20 @@
     <Compile Include="Events\SendMessageEventArgs.cs" />
     <Compile Include="Events\SignInEventArgs.cs" />
     <Compile Include="Events\ErrorEventHandler.cs" />
-    <Compile Include="Interfaces\IAsyncServiceClient.cs" />
     <Compile Include="Interfaces\IServiceClient.cs" />
     <Compile Include="Interfaces\IServiceClientFactory.cs" />
-    <Compile Include="Policy\Limits.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Resources\Strings\Errors.cs" />
-    <Compile Include="Utilities\Validator.cs" />
     <Compile Include="ViewModels\ChatViewModel.cs" />
     <Compile Include="ViewModels\CommandExtensions.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\ViewModel.cs" />
     <EmbeddedResource Include="Properties\Client.Uwp.rd.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\Common.Uwp\Common.Uwp.csproj">
+      <Project>{322F1CFF-702F-49CB-953E-75245C540E90}</Project>
+      <Name>Common.Uwp</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

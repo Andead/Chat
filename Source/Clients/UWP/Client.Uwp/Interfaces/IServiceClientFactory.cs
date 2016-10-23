@@ -2,8 +2,6 @@
 {
     public interface IServiceClientFactory
     {
-        IAsyncServiceClient GetAsyncServiceClient();
-
         IServiceClient GetServiceClient();
     }
 }

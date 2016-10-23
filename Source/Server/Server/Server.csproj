@@ -48,8 +48,8 @@
     <Compile Include="Services\ChatService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\Resources\Common.csproj">
-      <Project>{F9E6727D-BB3B-484B-B4DC-4067F4EFDF80}</Project>
+    <ProjectReference Include="..\..\Common\Common\Common.csproj">
+      <Project>{f9e6727d-bb3b-484b-b4dc-4067f4efdf80}</Project>
       <Name>Common</Name>
     </ProjectReference>
   </ItemGroup>

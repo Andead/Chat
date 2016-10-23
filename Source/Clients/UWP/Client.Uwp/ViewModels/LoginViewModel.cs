@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows.Input;
-using Andead.Chat.Client.Uwp.Utilities;
+using Andead.Chat.Common.Utilities;
 using GalaSoft.MvvmLight.Command;
 
 namespace Andead.Chat.Client.Uwp
@@ -9,6 +9,7 @@ namespace Andead.Chat.Client.Uwp
     {
         private readonly ConnectionConfiguration _connectionConfiguration;
         private readonly IServiceClientFactory _serviceClientFactory;
+        private bool _busy;
         private IServiceClient _client;
         private string _name;
         private bool _signInEnabled;
@@ -36,25 +37,37 @@ namespace Andead.Chat.Client.Uwp
             set
             {
                 Set(ref _name, value);
-                SignInEnabled = !string.IsNullOrWhiteSpace(value);
+
+                UpdateSignInEnabled();
+            }
+        }
+
+        public bool Busy
+        {
+            get { return _busy; }
+            private set
+            {
+                Set(ref _busy, value);
+
+                UpdateSignInEnabled();
             }
         }
 
         public ICommand SignInCommand { get; private set; }
 
-        public override void Load()
+        private void UpdateSignInEnabled()
         {
-            ReloadClient();
-
-            base.Load();
+            SignInEnabled = !Busy && !string.IsNullOrWhiteSpace(Name);
         }
 
-        private void ReloadClient()
+        public override void Load()
         {
-            IAsyncServiceClient asyncServiceClient = _serviceClientFactory.GetAsyncServiceClient();
+            IServiceClient asyncServiceClient = _serviceClientFactory.GetServiceClient();
             _client = asyncServiceClient ?? _serviceClientFactory.GetServiceClient();
 
             _client.Connect(_connectionConfiguration);
+
+            base.Load();
         }
 
         private void CreateCommands()
@@ -64,32 +77,10 @@ namespace Andead.Chat.Client.Uwp
 
         private async void ExecuteSignIn()
         {
-            SignInResult result;
+            Busy = true;
+            SignInResult result = await _client.SignInAsync(Name);
 
-            try
-            {
-                SignInEnabled = false;
-
-                var asyncServiceClient = _client as IAsyncServiceClient;
-                if (asyncServiceClient != null)
-                {
-                    result = await asyncServiceClient.SignInAsync(Name);
-                }
-                else
-                {
-                    result = _client.SignIn(Name);
-                }
-            }
-            catch (Exception e)
-            {
-                OnError(new ErrorEventArgs(e));
-                ReloadClient();
-                return;
-            }
-            finally
-            {
-                SignInEnabled = true;
-            }
+            Busy = false;
 
             ChatViewModel chatViewModel = result.Success
                 ? new ChatViewModel(_client)
