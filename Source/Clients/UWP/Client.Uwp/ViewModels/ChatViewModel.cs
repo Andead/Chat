@@ -11,6 +11,7 @@ namespace Andead.Chat.Client.Uwp
     public class ChatViewModel : ViewModel
     {
         private readonly IServiceClient _client;
+        private bool _busy;
         private string _message;
         private int? _onlineCount;
         private IReadOnlyCollection<string> _onlineNames;
@@ -42,13 +43,6 @@ namespace Andead.Chat.Client.Uwp
                     Task.Run(() => UpdateOnlineNames());
                 }
             }
-        }
-
-        private void UpdateTitle()
-        {
-            Title = OnlineCount.HasValue
-                ? $"{ServerName} ({OnlineCount} users)"
-                : $"{ServerName}";
         }
 
         public string Title
@@ -94,6 +88,19 @@ namespace Andead.Chat.Client.Uwp
 
         public SignInResult SignInResult { get; set; }
 
+        public bool Busy
+        {
+            get { return _busy; }
+            private set { Set(ref _busy, value); }
+        }
+
+        private void UpdateTitle()
+        {
+            Title = OnlineCount.HasValue
+                ? $"{ServerName} ({OnlineCount} users)"
+                : $"{ServerName}";
+        }
+
         public override void Load()
         {
             base.Load();
@@ -118,7 +125,7 @@ namespace Andead.Chat.Client.Uwp
 
         private void CreateCommands()
         {
-            SendMessageCommand = new RelayCommand(ExecuteSendMessage, () => SendEnabled);
+            SendMessageCommand = new RelayCommand(ExecuteSendMessage);
         }
 
         private void ClientOnMessageReceived(object sender, MessageReceivedEventArgs args)

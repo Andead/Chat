@@ -2,11 +2,15 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Windows.ApplicationModel.Core;
+using Windows.UI.Core;
 
 namespace Andead.Chat.Client.Uwp
 {
     public abstract class ViewModel : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public virtual event EventHandler<ErrorEventArgs> Error;
 
         protected virtual void OnError(ErrorEventArgs e)
@@ -27,17 +31,11 @@ namespace Andead.Chat.Client.Uwp
         {
         }
 
-        public void Reload()
+        protected virtual async void OnPropertyChanged(string propertyName = null)
         {
-            Unload();
-            Load();
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged(string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(
+                CoreDispatcherPriority.Normal,
+                () => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)));
         }
 
         protected bool Set<T>(ref T field, T value = default(T), [CallerMemberName] string propertyName = null)

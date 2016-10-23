@@ -10,12 +10,6 @@ namespace Andead.Chat.Client.Uwp.Wcf
 {
     public class ServiceClient : IServiceClient, IChatServiceCallback, IDisposable
     {
-        private const string PerformingSignInDescription = "performing sign in";
-        private const string PerformingSignOutDescription = "performing sign-out";
-        private const string SendingAMessageDescription = "sending a message";
-        private const string GettingNamesOnlineDescription = "getting names online";
-        private const string DisconnectingDescription = "disconnecting";
-
         private ConnectionConfiguration _lastConfiguration;
         private string _lastName;
 
@@ -79,7 +73,7 @@ namespace Andead.Chat.Client.Uwp.Wcf
 
         public void Disconnect()
         {
-            Handle.Errors(() => ((ICommunicationObject) Service).Close(_timeout), DisconnectingDescription);
+            Handle.Errors(() => ((ICommunicationObject) Service).Close(_timeout), "disconnecting");
         }
 
         public SignInResult SignIn(string name)
@@ -98,7 +92,7 @@ namespace Andead.Chat.Client.Uwp.Wcf
 
             SignInResponse response =
                 await Handle.ErrorsAsync(async () => await Service.SignInAsync(request),
-                    Limits.ReconnectTimes, PerformingSignInDescription, e => Connect(e));
+                    Limits.ReconnectTimes, "performing sign in", e => Connect(e));
 
             return ProcessSignInResponse(response);
         }
@@ -111,7 +105,7 @@ namespace Andead.Chat.Client.Uwp.Wcf
 
         public async Task SignOutAsync()
         {
-            await Handle.ErrorsAsync(async () => await Service.SignOutAsync(), PerformingSignOutDescription);
+            await Handle.ErrorsAsync(async () => await Service.SignOutAsync(), "performing sign-out");
 
             SignedIn = false;
         }
@@ -128,7 +122,7 @@ namespace Andead.Chat.Client.Uwp.Wcf
             var request = new SendMessageRequest {Message = message};
 
             SendMessageResponse response = await Handle.ErrorsAsync(async () => await Service.SendMessageAsync(request),
-                SendingAMessageDescription, ConnectAndSignInAsync);
+                "sending a message", ConnectAndSignInAsync);
 
             return ProcessSendMessageResult(response);
         }
@@ -142,7 +136,7 @@ namespace Andead.Chat.Client.Uwp.Wcf
 
         public async Task<ObservableCollection<string>> GetNamesOnlineAsync()
         {
-            return await Handle.ErrorsAsync(() => Service.GetNamesOnlineAsync(), GettingNamesOnlineDescription);
+            return await Handle.ErrorsAsync(() => Service.GetNamesOnlineAsync(), "getting names online");
         }
 
         private SignInResult ProcessSignInResponse(SignInResponse response)

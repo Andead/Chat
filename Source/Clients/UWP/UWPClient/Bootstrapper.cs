@@ -1,4 +1,5 @@
-﻿using Windows.UI.Xaml;
+﻿using System;
+using Windows.UI.Xaml;
 using Andead.Chat.Client.Uwp.Services;
 using Andead.Chat.Client.Uwp.Wcf;
 using Andead.Chat.Common.Logging;
@@ -10,6 +11,7 @@ namespace Andead.Chat.Client.Uwp
     public class Bootstrapper : IServiceClientFactory
     {
         private readonly IContainer _container;
+        private IDisposable _currentClient;
 
         public Bootstrapper()
         {
@@ -18,7 +20,6 @@ namespace Andead.Chat.Client.Uwp
             Handle.Logger = new MetroLogger();
             builder.RegisterInstance(Handle.Logger).As<ILogger>();
 
-            builder.RegisterType<ServiceClient>().As<IServiceClient>();
             builder.RegisterInstance(this).As<IServiceClientFactory>();
 
             builder.RegisterType<LoginViewModel>().SingleInstance();
@@ -33,7 +34,15 @@ namespace Andead.Chat.Client.Uwp
 
         public IServiceClient GetServiceClient()
         {
-            return _container.Resolve<IServiceClient>();
+            var client = new ServiceClient();
+
+            if (_currentClient != null)
+            {
+                _currentClient.Dispose();
+                _currentClient = client;
+            }
+
+            return client;
         }
     }
 }

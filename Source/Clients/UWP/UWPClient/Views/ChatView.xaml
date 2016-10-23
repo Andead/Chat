@@ -7,6 +7,53 @@
     xmlns:uwp="using:Andead.Chat.Client.Uwp"
     mc:Ignorable="d"
     d:DataContext="{d:DesignInstance uwp:ChatViewModel}">
+    <uwp:View.Resources>
+        <ResourceDictionary Source="../Assets/Styles.xaml" />
+    </uwp:View.Resources>
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" />
+    <Grid
+        Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock
+            Text="{Binding ServerName}"
+            Margin="20"
+            Style="{StaticResource HeaderTextBlockStyle}" />
+
+        <ScrollViewer
+            Name="ScrollViewer"
+            Grid.Row="1">
+            <StackPanel
+                Style="{StaticResource ChatStackPanel}"
+                x:Name="MessagesPanel" />
+        </ScrollViewer>
+
+        <Grid
+            BorderBrush="{ThemeResource CheckBoxBorderThemeBrush}"
+            BorderThickness="0 1 0 0"
+            Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBox
+                TabIndex="0"
+                Style="{StaticResource InputTextBox}"
+                IsReadOnly="{Binding Busy}"
+                Text="{Binding Message, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+            <Button
+                Margin="5 0 0 0"
+                Grid.Column="1"
+                Content="Send"
+                Style="{StaticResource Button}"
+                IsEnabled="{Binding SendEnabled}"
+                Command="{Binding SendMessageCommand}" />
+        </Grid>
+    </Grid>
 </uwp:View>
