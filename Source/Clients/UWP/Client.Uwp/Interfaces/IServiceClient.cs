@@ -17,6 +17,11 @@ namespace Andead.Chat.Client.Uwp
         string ServerName { get; }
 
         /// <summary>
+        ///     Gets a boolean value indicating whether the client is using SSL connection.
+        /// </summary>
+        bool UsesSsl { get; }
+
+        /// <summary>
         ///     Opens the connection.
         /// </summary>
         void Connect(ConnectionConfiguration configuration);

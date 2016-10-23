@@ -13,6 +13,7 @@ namespace Andead.Chat.Client.Uwp
         private string _name = "Guest";
         private bool _enterEnabled = true;
         private string _serverName = "localhost";
+        private bool _useSsl;
 
         public LoginViewModel(IServiceClientFactory serviceClientFactory)
         {
@@ -58,6 +59,12 @@ namespace Andead.Chat.Client.Uwp
             set { Set(ref _serverName, value); }
         }
 
+        public bool UseSsl
+        {
+            get { return _useSsl; }
+            set { Set(ref _useSsl, value); }
+        }
+
         private void UpdateSignInEnabled()
         {
             EnterEnabled = !Busy && !string.IsNullOrWhiteSpace(Name);
@@ -74,7 +81,11 @@ namespace Andead.Chat.Client.Uwp
 
             _client = _serviceClientFactory.GetServiceClient();
 
-            var configuration = new ConnectionConfiguration {ServerName = ServerName};
+            var configuration = new ConnectionConfiguration
+            {
+                ServerName = ServerName,
+                UseSsl = UseSsl
+            };
             _client.Connect(configuration);
 
             SignInResult result = await _client.SignInAsync(Name);

@@ -14,16 +14,17 @@
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        
+
         <TextBlock 
             Text="Login" 
             Margin="20"
             Style="{StaticResource HeaderTextBlockStyle}" />
-        
+
         <Grid 
             Margin="20"
             Grid.Row="1">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -40,19 +41,25 @@
                 IsReadOnly="{Binding Busy}"
                 Text="{Binding ServerName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-            <TextBlock 
+            <CheckBox 
                 Grid.Row="2"
+                Margin="0 10 0 0"
+                Content="Use SSL"
+                IsChecked="{Binding UseSsl, Mode=TwoWay}"/>
+            
+            <TextBlock 
+                Grid.Row="3"
                 Text="Name: "
                 Margin="0 20 0 0"
                 Style="{StaticResource TitleTextBlockStyle}" />
             <TextBox 
-                Grid.Row="3"
+                Grid.Row="4"
                 Margin="0 10 0 0"
                 IsReadOnly="{Binding Busy}"
                 Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
             <Button
-                Grid.Row="4"
+                Grid.Row="5"
                 Content="Enter"
                 Margin="20"
                 IsEnabled="{Binding EnterEnabled}"

@@ -44,6 +44,8 @@ namespace Andead.Chat.Client.Uwp.Wcf
 
         public string ServerName { get; private set; }
 
+        public bool UsesSsl { get; private set; }
+
         public void Connect(ConnectionConfiguration configuration)
         {
             if (configuration == null)
@@ -58,21 +60,29 @@ namespace Andead.Chat.Client.Uwp.Wcf
             string hostname = configuration.ServerName.Split('/').First();
             string path = configuration.ServerName.Substring(hostname.Length);
 
+            var binding = new NetTcpBinding(SecurityMode.None);
+            if (configuration.UseSsl)
+            {
+                binding.Security.Mode = SecurityMode.Transport;
+                binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.None;
+            }
+
             DuplexChannelFactory<IChatService> factory;
             switch (configuration.Protocol)
             {
                 case "net.tcp":
-                    factory = new DuplexChannelFactory<IChatService>(new InstanceContext(this),
-                        new NetTcpBinding(SecurityMode.None),
+                    factory = new DuplexChannelFactory<IChatService>(new InstanceContext(this), binding,
                         new EndpointAddress($"net.tcp://{hostname}:{configuration.Port}{path}/Service.svc"));
                     break;
                 default:
                     throw new NotSupportedException("Supported protocol is only net.tcp.");
             }
 
+
             Service = factory.CreateChannel();
 
             ServerName = configuration.ServerName;
+            UsesSsl = configuration.UseSsl;
             _timeout = TimeSpan.FromMilliseconds(configuration.TimeOut);
         }
 
