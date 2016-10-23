@@ -7,28 +7,25 @@ namespace Andead.Chat.Client.Uwp
 {
     public class LoginViewModel : ViewModel
     {
-        private readonly ConnectionConfiguration _connectionConfiguration;
         private readonly IServiceClientFactory _serviceClientFactory;
         private bool _busy;
         private IServiceClient _client;
-        private string _name;
-        private bool _signInEnabled;
+        private string _name = "Guest";
+        private bool _enterEnabled = true;
+        private string _serverName = "localhost";
 
-        public LoginViewModel(IServiceClientFactory serviceClientFactory,
-            ConnectionConfiguration connectionConfiguration)
+        public LoginViewModel(IServiceClientFactory serviceClientFactory)
         {
             serviceClientFactory.IsNotNull(nameof(serviceClientFactory));
-            connectionConfiguration.IsNotNull(nameof(connectionConfiguration));
             _serviceClientFactory = serviceClientFactory;
-            _connectionConfiguration = connectionConfiguration;
 
             CreateCommands();
         }
 
-        public bool SignInEnabled
+        public bool EnterEnabled
         {
-            get { return _signInEnabled; }
-            private set { Set(ref _signInEnabled, value); }
+            get { return _enterEnabled; }
+            private set { Set(ref _enterEnabled, value); }
         }
 
         public string Name
@@ -53,31 +50,33 @@ namespace Andead.Chat.Client.Uwp
             }
         }
 
-        public ICommand SignInCommand { get; private set; }
+        public ICommand EnterCommand { get; private set; }
+
+        public string ServerName
+        {
+            get { return _serverName; }
+            set { Set(ref _serverName, value); }
+        }
 
         private void UpdateSignInEnabled()
         {
-            SignInEnabled = !Busy && !string.IsNullOrWhiteSpace(Name);
-        }
-
-        public override void Load()
-        {
-            IServiceClient asyncServiceClient = _serviceClientFactory.GetServiceClient();
-            _client = asyncServiceClient ?? _serviceClientFactory.GetServiceClient();
-
-            _client.Connect(_connectionConfiguration);
-
-            base.Load();
+            EnterEnabled = !Busy && !string.IsNullOrWhiteSpace(Name);
         }
 
         private void CreateCommands()
         {
-            SignInCommand = new RelayCommand(ExecuteSignIn, () => SignInEnabled);
+            EnterCommand = new RelayCommand(Enter);
         }
 
-        private async void ExecuteSignIn()
+        private async void Enter()
         {
             Busy = true;
+
+            _client = _serviceClientFactory.GetServiceClient();
+
+            var configuration = new ConnectionConfiguration {ServerName = ServerName};
+            _client.Connect(configuration);
+
             SignInResult result = await _client.SignInAsync(Name);
 
             Busy = false;
@@ -86,14 +85,14 @@ namespace Andead.Chat.Client.Uwp
                 ? new ChatViewModel(_client)
                 : null;
 
-            OnSignIn(new SignInEventArgs(result, chatViewModel));
+            OnEntered(new SignInEventArgs(result, chatViewModel));
         }
 
-        public event EventHandler<SignInEventArgs> SignIn;
+        public event EventHandler<SignInEventArgs> Entered;
 
-        protected virtual void OnSignIn(SignInEventArgs e)
+        protected virtual void OnEntered(SignInEventArgs e)
         {
-            SignIn?.Invoke(this, e);
+            Entered?.Invoke(this, e);
         }
     }
 }

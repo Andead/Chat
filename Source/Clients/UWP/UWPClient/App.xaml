@@ -2,6 +2,9 @@
     x:Class="Andead.Chat.Client.Uwp.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:uwp="using:Andead.Chat.Client.Uwp"
     RequestedTheme="Dark">
-
+    <Application.Resources>
+        <uwp:Bootstrapper x:Key="Bootstrapper" />
+    </Application.Resources>
 </Application>

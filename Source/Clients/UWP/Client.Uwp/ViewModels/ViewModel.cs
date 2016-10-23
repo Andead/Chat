@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -6,7 +7,7 @@ namespace Andead.Chat.Client.Uwp
 {
     public abstract class ViewModel : INotifyPropertyChanged
     {
-        public virtual event ErrorEventHandler Error;
+        public virtual event EventHandler<ErrorEventArgs> Error;
 
         protected virtual void OnError(ErrorEventArgs e)
         {

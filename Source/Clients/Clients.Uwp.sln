@@ -9,11 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UWPClient", "UWP\UWPClient\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client.Uwp.Wcf", "UWP\Client.Uwp.Wcf\Client.Uwp.Wcf.csproj", "{9D8B6B46-B3AA-4CC9-953B-B4EF4437355D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configuration", "Configuration", "{1E7DF89F-96C4-4C76-BA6C-DE6AB8960797}"
-	ProjectSection(SolutionItems) = preProject
-		..\Common\Configuration\NLog.config = ..\Common\Configuration\NLog.config
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Uwp", "..\Common\Common.Uwp\Common.Uwp.csproj", "{322F1CFF-702F-49CB-953E-75245C540E90}"
 EndProject
 Global
