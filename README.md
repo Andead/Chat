@@ -13,3 +13,11 @@ Used libraries:
 [MahApps.Metro](https://github.com/MahApps/MahApps.Metro/)  
 [MvvmLight](https://mvvmlight.codeplex.com/)  
 [Autofac](https://github.com/autofac/Autofac)  
+
+Screenshots:
+
+![WinForms Login](https://github.com/AndeadFMP/Chat/blob/gh-pages/winforms1.png)
+![WPF Login](https://github.com/AndeadFMP/Chat/blob/gh-pages/wpf1.png)   
+![WinForms Chat](https://github.com/AndeadFMP/Chat/blob/gh-pages/winforms2.png)
+![WPF Chat](https://github.com/AndeadFMP/Chat/blob/gh-pages/wpf2.png)  
+![Server console](https://github.com/AndeadFMP/Chat/blob/gh-pages/server.png)  
