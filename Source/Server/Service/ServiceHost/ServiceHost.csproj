@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ServiceHost</RootNamespace>
     <AssemblyName>ServiceHost</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <PublishUrl>publish\</PublishUrl>
@@ -52,13 +52,12 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\NLog.4.3.10\lib\net45\NLog.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c">
+      <HintPath>..\..\..\packages\NLog.4.3.10\lib\net45\NLog.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="NativeMethods.cs" />
@@ -70,21 +69,20 @@
     <None Include="..\..\..\Common\Configuration\NLog.config">
       <Link>NLog.config</Link>
     </None>
-    <None Include="App.config" />
     <None Include="app.manifest" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Common\Common\Common.csproj">
-      <Project>{f9e6727d-bb3b-484b-b4dc-4067f4efdf80}</Project>
+      <Project>{F9E6727D-BB3B-484B-B4DC-4067F4EFDF80}</Project>
       <Name>Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Service\Service.csproj">
-      <Project>{bfadae9c-2eb3-4200-8ea0-6637f5b9c6ff}</Project>
+      <Project>{BFADAE9C-2EB3-4200-8EA0-6637F5B9C6FF}</Project>
       <Name>Service</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Server\Server.csproj">
-      <Project>{739669cf-bcd2-4da1-9f0e-cbcaed554a64}</Project>
+      <Project>{739669CF-BCD2-4DA1-9F0E-CBCAED554A64}</Project>
       <Name>Server</Name>
     </ProjectReference>
   </ItemGroup>
@@ -112,4 +110,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ItemGroup>
+    <Content Include="App.config" />
+  </ItemGroup>
 </Project>

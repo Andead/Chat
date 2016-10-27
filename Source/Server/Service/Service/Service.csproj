@@ -1,19 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>
-    </ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{BFADAE9C-2EB3-4200-8EA0-6637F5B9C6FF}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Andead.Chat.Server.Wcf</RootNamespace>
     <AssemblyName>Service</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <WcfConfigValidationEnabled>True</WcfConfigValidationEnabled>
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
     <UseIISExpress>false</UseIISExpress>
@@ -74,11 +71,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Common\Common\Common.csproj">
-      <Project>{f9e6727d-bb3b-484b-b4dc-4067f4efdf80}</Project>
+      <Project>{F9E6727D-BB3B-484B-B4DC-4067F4EFDF80}</Project>
       <Name>Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Server\Server.csproj">
-      <Project>{739669cf-bcd2-4da1-9f0e-cbcaed554a64}</Project>
+      <Project>{739669CF-BCD2-4DA1-9F0E-CBCAED554A64}</Project>
       <Name>Server</Name>
     </ProjectReference>
   </ItemGroup>
@@ -97,6 +94,11 @@
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>
+    <MonoDevelop>
+      <Properties>
+        <XspParameters Port="8080" Address="127.0.0.1" SslMode="None" SslProtocol="Tls" KeyType="None" CertFile="" KeyFile="" PasswordOptions="None" Password="" Verbose="True" />
+      </Properties>
+    </MonoDevelop>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
