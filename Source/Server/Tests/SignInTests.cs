@@ -4,15 +4,15 @@ using Andead.Chat.Common.Logging;
 using Andead.Chat.Common.Policy;
 using Andead.Chat.Common.Resources.Strings;
 using Andead.Chat.Server;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using NUnit.Framework;
 
 namespace ChatServiceTests
 {
-    [TestClass]
+    [TestFixture]
     public class SignInTests
     {
-        [TestMethod]
+        [Test]
         public void SignIn_WithEmptyName_ReturnsFailure()
         {
             IChatService service = CreateService();
@@ -39,7 +39,7 @@ namespace ChatServiceTests
             }
         }
 
-        [TestMethod]
+        [Test]
         public void SignIn_WithUsernameExceedingLimits_ReturnsFailure()
         {
             IChatService service = CreateService();
