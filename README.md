@@ -1,7 +1,7 @@
 # Chat
 A simple client-server chat implementation based on WCF.
 
-Server part - WCF service, hosted in a console application (or IIS). Currently no security used. Listens to a 808 port in duplex mode using net.tcp protocol.  
+Server part - WCF service, hosted in a console application (or IIS). Listens to a 808 port in duplex mode using net.tcp protocol.  
 Client part - a WinForms, a WPF and a UWP application. 
 
 Requires .NET Framework 4.6.1. 
